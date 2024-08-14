@@ -20,8 +20,7 @@
                 {#if content === "..."}
                     <div class="loader"></div>
                 {:else}
-                    <p>{content}</p>
-                    <!-- <SvelteMarkdown source={ content } /> -->
+                    <SvelteMarkdown source={ content } />
                 {/if}
             {/if}
         </div>

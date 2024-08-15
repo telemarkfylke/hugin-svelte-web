@@ -86,6 +86,9 @@
 {/if}
 
 <style>
+* {
+  /* user-select:none; */
+}
   .appTitle {
     color: black;
     text-decoration: none;

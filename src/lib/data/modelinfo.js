@@ -8,13 +8,13 @@ export const modelinfo = {
   },
   option2: {
     navn: 'NoraLLM',
-    description: 'NoraLLM er en norsk språmodell som er basert på Mistral',
+    description: 'Nora er en familie med norske språkmodeller utviklet av språkteknologigruppen ved Universitet i Oslo (UiO), i samarbeid med blant annet Nasjonalbiblioteket, og er trent på norske tekster (bokmål og nynorsk). Til forskjell fra de store kommersielle språkmodellene, så er ikke Nora-modellen i Hugin en ferdigutviklet samtalerobot, men den har som formål å vise hvordan en språkmodell som er trent på norske data kan respondere godt på særnorske ord og uttrykk. I tillegg er mindre, åpne og  spesialiserte modeller mer bærekraftige enn de enorme modellene fra de store teknologiselskapene.',
     synligKontekst: false,
     illustrasjon: 'nora.png'
   },
   option3: {
     navn: 'Matematikkens byggesteiner',
-    description: 'Matematikkens byggesteiner er en lærebok som dekker de fleste temaer i matematikk fra grunnskolen til og med 1P/2P på videregående. Denne assistenten er svarer på spørsmål om matematikk basert på innholdet i denne boken. I tillegg er læreplanene i matematikk 1P og 2P lagt til som kontekst. Alle responser er basert på innholdet i boken, og assistenten er instruert til kun å gi svar som er relevante for matematikk. Læreboken er skrevet av Sindre Sogge Heggen og publisert på https://sindrsh.github.io/openmathbooks/ under en Creative Commons-lisens. CC BY-NC-SA 4.0',
+    description: 'Matematikkens byggesteiner er en lærebok som dekker de fleste temaer i matematikk fra grunnskolen til og med 1P/2P på videregående. Denne assistenten svarer på spørsmål om matematikk basert på innholdet i denne boken. I tillegg er læreplanene i matematikk 1P og 2P lagt til som kontekst. Alle responser er basert på innholdet i boken, og assistenten er instruert til kun å gi svar som er relevante for matematikk. Læreboken er skrevet av Sindre Sogge Heggen og publisert på https://sindrsh.github.io/openmathbooks/ under en Creative Commons-lisens. CC BY-NC-SA 4.0',
     synligKontekst: false,
     illustrasjon: 'matematikk.png'
   },

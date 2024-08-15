@@ -29,21 +29,21 @@
 
 <InfoBox title="Formål og personvern">
 <p>
-    ChatVTFK er utviklet av Vestfold og Telemark fylkeskommune, ved å ta i bruk
+    Hugin/Munin er utviklet av Vestfold og Telemark fylkeskommune, ved å ta i bruk
     OpenAI sitt ChatGPT-API og våre egenutviklede nettjenester. Det medfører at vi
     har kunnet jobbe etter prinsippet om innebygget personvern – å ta de mest
     personvernvennlige valgene fra starten av utviklingen. Valgene som er tatt
     skal resultere i en tjeneste med en akseptabel personvernmessig risiko.
-    Formålet med ChatGPT er å tilby en chatbot-tjeneste til bruk i videregående
+    Formålet med Hugin og Munin er å tilby en chatbot-tjeneste til bruk i videregående
     opplæring. Den skal la elever og lærere ta i bruk kunstig intelligens, både
     for å øke elevens læringsutbytte, men også for å kunne bidra til refleksjon
-    rundt viktig oppstående teknologi i tidlig fase. ChatVTFK er den samme
-    tjenesten som OpenAI sin ChatGPT men med noen viktige forskjeller. ChatVTFK
+    rundt viktig oppstående teknologi i tidlig fase. Hugin og Munin er den samme
+    tjenesten som OpenAI sin ChatGPT men med noen viktige forskjeller. Hugin og Munin
     bruker et API for å kommunisere med ChatGPT. Det betyr at informasjon om den
     som bruker tjenesten aldri blir sendt ut fra skolens systemer. Når man bruker
     APIet til ChatGPT gjelder det strengere regler for hvordan informasjon som
     sendes inn i tjenesten behandles enn hvis man bruker den allment tilgjengelige
-    ChatGPT-tjenesten. De viktigste forskjellene mellom ChatVTFK og den ordinære
+    ChatGPT-tjenesten. De viktigste forskjellene mellom Hugin/Munin og den ordinære
     ChatGPT er at:
 </p>
 <ul>
@@ -63,7 +63,7 @@
     Følgende opplysninger overføres underdatabehandler OpenAI og lagres i 30 dager før sletting:
 </p>
 <ul>
-    <li>Tekst (spørringer) til chatVTFK, samt svarene den gir.</li>
+    <li>Tekst (spørringer) til Hugin og Munin, samt svarene den gir.</li>
     <li>Personopplysninger i treningsdata og modell ChatGPT 3.5 kan inneholde personopplysninger fra trening/utvikling og behandles for å gi den som utfører spørringen et resultat i likhet med et informasjonssøk fra åpne tilgjengelige kilder.</li>
 </ul>
 </InfoBox>

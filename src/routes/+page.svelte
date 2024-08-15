@@ -42,6 +42,9 @@
   
   
   <style>
+  * {
+    /* user-select:none; */
+    }
     .centerstuff {
         display: flex;
         flex-direction: row;

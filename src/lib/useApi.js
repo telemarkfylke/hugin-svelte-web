@@ -26,7 +26,6 @@ export const getHuginToken = async (decoded) => {
       const { upn, roles } = decodedToken
       result.upn = upn || 'appReg'
       result.roles = roles || []
-
       return result
     }
     return accessToken

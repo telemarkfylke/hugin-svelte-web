@@ -19,10 +19,23 @@ export const modelinfo = {
     illustrasjon: 'matematikk.png'
   },
   option4: {
+    navn: 'Teoretisk matematikk 1 og 2',
+    description: 'Matematikkens byggesteiner er en to lærebøker som dekker de fleste temaer i matematikk for 1T, R1 og R2 på videregående. Denne assistenten svarer på spørsmål om matematikk basert på innholdet i disse bøkene. I tillegg er læreplanene i matematikk 1T, R1 og R2 lagt til som kontekst. Alle responser er basert på innholdet i boken, og assistenten er instruert til kun å gi svar som er relevante for matematikk. Læreboken er skrevet av Sindre Sogge Heggen og publisert på https://sindrsh.github.io/openmathbooks/ under en Creative Commons-lisens. CC BY-NC-SA 4.0',
+    synligKontekst: false,
+    illustrasjon: 'matematikk.png'
+  },
+  option5: {
     navn: 'NDLA Religion - eksperimentell assistent',
     description: 'NDLA Religion er en eksperimentell assistent som forholder seg NDLA sine ressurser om religion. Alle responser er basert på innholdet i disse ressursene. I tillegg til læringsressursene fra NDLA, er assistenten instruert til å respondere i henhold til læreplanen i faget. (REL01-02)',
     synligKontekst: false,
     illustrasjon: 'NDLA.png'
+
+  },
+  option6: {
+    navn: 'VTR - eksperimentell assistent',
+    description: 'VTR er en eksperimentell ekspertbot som er trent på en håndull rapporter',
+    synligKontekst: false,
+    illustrasjon: ''
 
   }
 }

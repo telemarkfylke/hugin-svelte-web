@@ -34,7 +34,23 @@ export const params = {
     message: '',
     kontekst: '',
     model: 'gpt-4o',
+    assistant_id: 'asst_spZnnaORJPY3QThyiUZY2QoF',
+    new_thread: true,
+    thread_id: ''
+  },
+  option5: {
+    message: '',
+    kontekst: '',
+    model: 'gpt-4o',
     assistant_id: 'asst_PjgBFDXTELeMF6vXKvhlOZrH',
+    new_thread: true,
+    thread_id: ''
+  },
+  option6: {
+    message: '',
+    kontekst: '',
+    model: 'gpt-4o',
+    assistant_id: 'asst_kleLVY0hLwXAgcgxoBgzwqLA',
     new_thread: true,
     thread_id: ''
   }

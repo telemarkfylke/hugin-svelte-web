@@ -13,5 +13,5 @@
 
 <div class="card">
     <h2>{modelinfo}</h2>
-    <p>{infoText}</p>
+    <p>{@html infoText}</p>
 </div>

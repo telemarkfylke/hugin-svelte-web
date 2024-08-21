@@ -1,9 +1,45 @@
 <script>
     import SvelteMarkdown from 'svelte-markdown'
+    import katex from 'katex';
+    import showdown from 'showdown';
 // Props
     export let role = 'user'
     export let content = 'content'
+    const test = `(a + b)^2 = a^2 + +2ab + b^2`
+	const render = (s) => katex.renderToString(s)
+    let converter = new showdown.Converter()
+    let test2 = converter.makeHtml("Hello **World**" + render(test))
+
+    function consoleContent() {
+        console.log(content)
+    }
+
+    // Function to convert string from markdown to valid HTML with showdown.
+    // It also substitutes the LaTeX code with the corresponding HTML using katex.
+    function parseAiResponse(s) {
+        // Replace all LaTeX expressions
+        s = s.replace(/\\\[(.*?)\\\]/g, (_, match) => `$$${match}$$`);
+        s = s.replace(/\\\((.*?)\\\)/g, (_, match) => `$${match}$`);
+        
+        // Convert markdown to HTML
+        let html = converter.makeHtml(s);
+
+        // Replace <em> and </em> with _
+        html = html.replace(/<em>/g, '_ ').replace(/<\/em>/g, '_ ')
+        let htmlWithKatex = html.replace(/\$\$(.*?)\$\$/g, (_, match) => {
+            return katex.renderToString(match, { throwOnError: false });
+        }).replace(/\$(.*?)\$/g, (_, match) => {
+            return katex.renderToString(match, { throwOnError: false });
+        });
+        return htmlWithKatex
+    }
+
+
+
 </script>
+<head>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css" integrity="sha384-nB0miv6/jRmo5UMMR1wu3Gz6NLsoTkbqJghGIsx//Rlm+ZU03BU6SQNC66uf4l5+" crossorigin="anonymous">
+</head>
 
 <div class="{role}">
     {#if content === ""}
@@ -20,7 +56,8 @@
                 {#if content === "..."}
                     <div class="loader"></div>
                 {:else}
-                    <SvelteMarkdown source={ content } />
+                    {@html parseAiResponse(content)}
+                    
                 {/if}
             {/if}
         </div>

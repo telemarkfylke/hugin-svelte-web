@@ -89,6 +89,7 @@
         userParams.messageHistory.push({ role: "assistant", content: respons })
         scrollToBottom(chatWindow)
         isWaiting = false
+
       } else if (userParams.valgtModell === "option2") {
         userParams.synligKontekst = false
         userParams.messageHistory.push({
@@ -98,6 +99,7 @@
         respons = await noraChat(userParamsCopy)
         userParams.messageHistory.push({ role: "assistant", content: respons })
         isWaiting = false
+
       } else if (userParams.valgtModell === "option3") {
         userParams.messageHistory.push({
           role: "user",
@@ -106,23 +108,8 @@
         respons = await openAiAssistant(userParamsCopy)
         userParams.messageHistory.push({ role: "assistant", content: respons })
         isWaiting = false
-      } else if (userParams.valgtModell === "option4") {
-        userParams.messageHistory.push({
-          role: "user",
-          content: userParamsCopy.message,
-        })
-        respons = await openAiAssistant(userParamsCopy)
-        userParams.messageHistory.push({ role: "assistant", content: respons })
-        isWaiting = false
-      } else if (userParams.valgtModell === "option5") {
-        userParams.messageHistory.push({
-          role: "user",
-          content: userParamsCopy.message,
-        })
-        respons = await openAiAssistant(userParamsCopy)
-        userParams.messageHistory.push({ role: "assistant", content: respons })
-        isWaiting = false
-      } else if (userParams.valgtModell === "option6") {
+
+      } else if (userParams.valgtModell === "option4"  || userParams.valgtModell === "option5" || userParams.valgtModell === "option6" || userParams.valgtModell === "option7") {
         userParams.messageHistory.push({
           role: "user",
           content: userParamsCopy.message,
@@ -150,6 +137,7 @@
     showModal = true
   }
 
+  // Justerer størrelsen på opplastede bilder
   const resizeBase64Image = (base64, width, height) => {
   // Create a canvas element
   const canvas = document.createElement('canvas')
@@ -249,34 +237,25 @@
             <option value="option2">Nora</option>
           {/if}
           <option value="option3">Matematikkens byggesteiner 1P og 2P</option>
-          <option value="option4">Teoretisk matematikk 1T, R1 og R2</option>
-          <option value="option5">NDLA Religion (Eksperimentell)</option>
+          <option value="option4">Teoretisk matematikk 1T og R1</option>
+          <option value="option5">Teoretisk matematikk R2</option>
+          <option value="option6">NDLA Religion (Eksperimentell)</option>
           <!-- Skjuler VTR for alle som ikke har admin til det er klart -->
           {#if !token.roles.includes(`${appName.toLowerCase()}.admin`)}
-            <option value="option6" hidden>VTR</option>
+            <option value="option7" hidden>VTR</option>
           {:else}
-            <option value="option6">VTR</option>
+            <option value="option7">VTR</option>
           {/if}
         </select>
         <div class="showNhideBtns">
           {#if modelTampering}
-            <button
-              class="link"
-              on:click={() => {
-                modelTampering = !modelTampering
-              }}
-              ><span class="material-symbols-outlined">keyboard_arrow_up</span
-              ></button
-            >
+            <button class="link" on:click={() => { modelTampering = !modelTampering }}>
+              <span class="material-symbols-outlined">keyboard_arrow_up</span>
+            </button>
           {:else}
-            <button
-              class="link"
-              on:click={() => {
-                modelTampering = !modelTampering
-              }}
-              ><span class="material-symbols-outlined">keyboard_arrow_down</span
-              ></button
-            >
+            <button class="link" on:click={() => { modelTampering = !modelTampering }}>
+              <span class="material-symbols-outlined">keyboard_arrow_down</span>
+            </button>
           {/if}
         </div>
       </div>

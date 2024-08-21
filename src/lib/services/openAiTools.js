@@ -25,18 +25,26 @@ export const multimodalOpenAi = async (userParams) => {
 }
 
 export const noraChat = async (modellInfo) => {
+
+  // Sjekker om det er hverdag mellom 09:00 og 16:00
+  const isWeekday = (date = new Date()) => date.getDay() % 6 !== 0;
+  const isDaytime = (date = new Date()) => date.getHours() >= 9 && date.getHours() < 16;
+  console.log(isWeekday(), isDaytime())
   // Template API-call
   const payload = params[modellInfo.valgtModell]
   payload.question = modellInfo.message
 
   const accessToken = await getHuginToken()
-
-  const response = await axios.post(`${import.meta.env.VITE_AI_API_URI}/noraChat`, payload, {
-    headers: {
-      'authorization': `Bearer ${accessToken}`
-    }
-  })
-  return response.data
+  if (isWeekday() && isDaytime()) {
+    const response = await axios.post(`${import.meta.env.VITE_AI_API_URI}/noraChat`, payload, {
+      headers: {
+        'authorization': `Bearer ${accessToken}`
+      }
+    })
+    return response.data
+  } else {
+    return 'Nora er tilgjengelig på hverdager mellom 09:00 og 16:00. Prøv igjen senere.'
+  }
 }
 
 export const openAiAssistant = async (modellInfo) => {

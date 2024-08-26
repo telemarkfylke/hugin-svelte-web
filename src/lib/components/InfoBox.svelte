@@ -17,6 +17,7 @@
 <style>
     .infoBox {
         background-color: var(--vann-10);
+        margin-bottom: 1rem;
     }
     .title {
         border: 0px;

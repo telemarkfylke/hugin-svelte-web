@@ -71,7 +71,7 @@
     modelinfoModell = modelinfo[userParams.valgtModell].navn
     modelinfoBeskrivelse = modelinfo[userParams.valgtModell].description
     userParams.synligKontekst =
-      modelinfo[userParams.valgtModell].synligKontekst
+    modelinfo[userParams.valgtModell].synligKontekst
   }
 
   // Kaller på valgt modell med tilhørende parametre basert på brukerens valg
@@ -109,7 +109,7 @@
         userParams.messageHistory.push({ role: "assistant", content: respons })
         isWaiting = false
 
-      } else if (userParams.valgtModell === "option4"  || userParams.valgtModell === "option5" || userParams.valgtModell === "option6" || userParams.valgtModell === "option7") {
+      } else if (userParams.valgtModell === "option4"  || userParams.valgtModell === "option5" || userParams.valgtModell === "option6" || userParams.valgtModell === "option7" || userParams.valgtModell === "option8") {
         userParams.messageHistory.push({
           role: "user",
           content: userParamsCopy.message,
@@ -240,11 +240,16 @@
           <option value="option4">Teoretisk matematikk 1T og R1</option>
           <option value="option5">Teoretisk matematikk R2</option>
           <option value="option6">NDLA Religion (Eksperimentell)</option>
-          <!-- Skjuler VTR for alle som ikke har admin til det er klart -->
+          <!-- Skjuler VTR og leieavtalefor alle som ikke har admin til det er klart -->
           {#if !token.roles.includes(`${appName.toLowerCase()}.admin`)}
             <option value="option7" hidden>VTR</option>
           {:else}
             <option value="option7">VTR</option>
+          {/if}
+          {#if !token.roles.includes(`${appName.toLowerCase()}.admin`)}
+           <option value="option8" hidden>Leieavtale elev-PC</option>
+          {:else}
+            <option value="option8">Leie- og låneavtale elev-PC</option>
           {/if}
         </select>
         <div class="showNhideBtns">
@@ -307,11 +312,10 @@
         {/each}
       {/if}
     </div>
+    <p>Husk at språkmodeller lager tekst som kan inneholde feil. Sjekk alltid flere kilder og bruk sunn fornuft når du bruker KI-tjenester.</p><br>
     {#if advancedInteractions}
       <div class="advancedInteractions">
-        <label for="file-upload"
-          ><span class="material-symbols-outlined">upload_file</span></label
-        >
+        <label for="file-upload"><span class="material-symbols-outlined">upload_file</span></label>
         <input
           type="file"
           id="file-upload"

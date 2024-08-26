@@ -61,5 +61,13 @@ export const params = {
     assistant_id: 'asst_kleLVY0hLwXAgcgxoBgzwqLA',
     new_thread: true,
     thread_id: ''
+  },
+  option8: {
+    message: '',
+    kontekst: '',
+    model: 'gpt-4o',
+    assistant_id: 'asst_mkb3jLMrZ7g04S6xfQ7aySxw',
+    new_thread: true,
+    thread_id: ''
   }
 }

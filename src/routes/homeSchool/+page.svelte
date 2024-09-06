@@ -232,9 +232,9 @@
           <option value="option1" default>GPT-4o</option>
           <!-- Skjuler NORA for alle som ikke har admin til det er klart -->
           {#if !token.roles.includes(`${appName.toLowerCase()}.admin`)}
-            <option value="option2" hidden>Nora</option>
+            <option value="option2" hidden>Nora - Eksperimentell</option>
           {:else}
-            <option value="option2">Nora</option>
+            <option value="option2">Nora - Eksperimentell</option>
           {/if}
           <option value="option3">Matematikkens byggesteiner 1P og 2P</option>
           <option value="option4">Teoretisk matematikk 1T og R1</option>
@@ -246,11 +246,7 @@
           {:else}
             <option value="option7">VTR</option>
           {/if}
-          {#if !token.roles.includes(`${appName.toLowerCase()}.admin`)}
-           <option value="option8" hidden>Leieavtale elev-PC</option>
-          {:else}
-            <option value="option8">Leie- og låneavtale elev-PC</option>
-          {/if}
+          <option value="option8">Geologi - Eksperimentell</option>
         </select>
         <div class="showNhideBtns">
           {#if modelTampering}
@@ -312,7 +308,7 @@
         {/each}
       {/if}
     </div>
-    <p>Husk at språkmodeller lager tekst som kan inneholde feil. Sjekk alltid flere kilder og bruk sunn fornuft når du bruker KI-tjenester.</p><br>
+    <p>Husk at språkmodeller lager tekst som kan inneholde feil. Sjekk alltid flere kilder og bruk sunn fornuft når du bruker KI-tjenester.<br> Ikke send inn data som kan være sensitive eller inneholder informasjon som ikke kan deles offentlig</p><br>
     {#if advancedInteractions}
       <div class="advancedInteractions">
         <label for="file-upload"><span class="material-symbols-outlined">upload_file</span></label>

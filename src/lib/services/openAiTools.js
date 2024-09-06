@@ -2,7 +2,7 @@
 
 import axios from 'axios'
 import { params } from '$lib/data/modelparams'
-import { env } from '$env/dynamic/public'
+// import { env } from '$env/dynamic/public'
 import { getHuginToken } from '../useApi'
 
 export const multimodalOpenAi = async (userParams) => {

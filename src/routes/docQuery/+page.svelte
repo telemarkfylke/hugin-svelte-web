@@ -31,9 +31,10 @@
   }
 </script>
 
-<h1>Heisann</h1>
-<p>Her kan du laste opp dokumenter for å få svar på spørsmål.</p>
+<h1>Dokumentspørring - Eksperimentell</h1>
+<p>Her kan du laste opp dokumenter for å få svar på spørsmål. Denne funksjonen er under utvikling og kan virke noe ustabil.</p>
 <div class="output">
+  
   {#await svar}
     <p>Laster...</p>
   {:then resultat}

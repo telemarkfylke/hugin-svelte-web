@@ -81,7 +81,7 @@
     <div class="content">
       <slot />
     </div>
-    <div class="footer"></div>
+    <!-- <div class="footer"></div> -->
   {/await}
 {/if}
 
@@ -96,14 +96,14 @@
   .topbar {
     width: 100%;
     background-color: var(--gress-10);
-    padding: 20px 0px;
+    padding: 00px 0px;
   }
   .toptop {
     width: 100%;
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 20px 40px 40px 40px;
+    padding: 10px 40px 10px 40px;
   }
   .topbarOptions {
     float: right;

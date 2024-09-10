@@ -308,7 +308,6 @@
         {/each}
       {/if}
     </div>
-    <p>Husk at språkmodeller lager tekst som kan inneholde feil. Sjekk alltid flere kilder og bruk sunn fornuft når du bruker KI-tjenester.<br> Ikke send inn data som kan være sensitive eller inneholder informasjon som ikke kan deles offentlig</p><br>
     {#if advancedInteractions}
       <div class="advancedInteractions">
         <label for="file-upload"><span class="material-symbols-outlined">upload_file</span></label>
@@ -362,6 +361,7 @@
       </Modal>
     {/if}
   {/if}
+  <br><p>Husk at språkmodeller lager tekst som kan inneholde feil. Sjekk alltid flere kilder og bruk sunn fornuft når du bruker KI-tjenester.<br> Ikke send inn data som kan være sensitive eller inneholder informasjon som ikke kan deles offentlig</p><br>
 </main>
 
 <style>
@@ -371,7 +371,7 @@
     flex-wrap: nowrap;
     justify-content: center;
     align-items: center;
-    height: calc(80vh - 100px);
+    height: calc(85vh);
     margin: 10px;
   }
   textarea {

@@ -251,11 +251,11 @@
         <div class="showNhideBtns">
           {#if modelTampering}
             <button class="link" on:click={() => { modelTampering = !modelTampering }}>
-              <span class="material-symbols-outlined">keyboard_arrow_up</span>
+              Trykk her for å lukke<span class="material-symbols-outlined">keyboard_arrow_up</span>
             </button>
           {:else}
             <button class="link" on:click={() => { modelTampering = !modelTampering }}>
-              <span class="material-symbols-outlined">keyboard_arrow_down</span>
+              Trykk her for å lese mer om modellen<span class="material-symbols-outlined">keyboard_arrow_down</span>
             </button>
           {/if}
         </div>

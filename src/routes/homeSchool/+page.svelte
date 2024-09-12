@@ -230,16 +230,11 @@
       <div class="boxyHeader">
         <select class="modellSelect" on:change={valgtModell}>
           <option value="option1" default>GPT-4o</option>
-          <!-- Skjuler NORA for alle som ikke har admin til det er klart -->
-          {#if !token.roles.includes(`${appName.toLowerCase()}.admin`)}
-            <option value="option2" hidden>Nora - Eksperimentell</option>
-          {:else}
-            <option value="option2">Nora - Eksperimentell</option>
-          {/if}
+          <option value="option2">Nora - Eksperimentell</option>
           <option value="option3">Matematikkens byggesteiner 1P og 2P</option>
           <option value="option4">Teoretisk matematikk 1T og R1</option>
           <option value="option5">Teoretisk matematikk R2</option>
-          <option value="option6">NDLA Religion (Eksperimentell)</option>
+          <option value="option6">NDLA Religion Eksperimentell</option>
           <!-- Skjuler VTR og leieavtalefor alle som ikke har admin til det er klart -->
           {#if !token.roles.includes(`${appName.toLowerCase()}.admin`)}
             <option value="option7" hidden>VTR</option>

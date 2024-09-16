@@ -1,4 +1,3 @@
-import axios from 'axios'
 import { login, getMsalClient } from '../lib/auth/msal-auth'
 import { jwtDecode } from 'jwt-decode'
 

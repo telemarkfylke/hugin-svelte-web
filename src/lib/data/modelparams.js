@@ -69,5 +69,12 @@ export const params = {
     assistant_id: 'asst_MZM21yV96uFVHet8O09zkKtK',
     new_thread: true,
     thread_id: ''
+  },
+  option9: {
+    message: '',
+    messageHistory: '',
+    kontekst: '',
+    model: 'o1-preview',
+    base64String: ''
   }
 }

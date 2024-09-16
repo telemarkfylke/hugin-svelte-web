@@ -1,9 +1,5 @@
 <script>
-  import {
-    multimodalOpenAi,
-    noraChat,
-    openAiAssistant,
-  } from "$lib/services/openAiTools"
+  import { multimodalOpenAi, noraChat, openAiAssistant } from "$lib/services/openAiTools"
   import { modelinfo } from "$lib/data/modelinfo" // Tekstbeskrivelser om valgt modell
   import ChatBlobs from "$lib/components/ChatBlobs.svelte" // Komponent for å vise chatmeldinger
   // import GPT4o from '$lib/images/GPT4o.png' // Bilde av valgt modell
@@ -18,6 +14,8 @@
   const userParams = {
     message: "",
     assistant_id: "",
+    newThread: true,
+    threadId: "",
     messageHistory: [],
     kontekst: "",
     valgtModell: "option1", // Default modell GPT-4o
@@ -44,16 +42,14 @@
   let showModal = false
   const appName = import.meta.env.VITE_APP_NAME
 
+  // Starter med en velkomstmelding
   userParams.messageHistory.push({
     role: "assistant",
     content: `Velkommen til ${appName}! Hva kan jeg hjelpe deg med i dag?`,
   })
 
   onMount(async () => {
-    if (
-      import.meta.env.VITE_MOCK_API &&
-      import.meta.env.VITE_MOCK_API === "true"
-    ) {
+    if ( import.meta.env.VITE_MOCK_API && import.meta.env.VITE_MOCK_API === "true" ) {
       // Pretend to wait for api call
       await new Promise((resolve) => setTimeout(resolve, 2000))
     }
@@ -77,45 +73,57 @@
   // Kaller på valgt modell med tilhørende parametre basert på brukerens valg
   const brukervalg = async () => {
     isWaiting = true
-    let userParamsCopy = JSON.parse(JSON.stringify(userParams))
-    userParams.message = ""
     try {
+      // GPT-4o
       if (userParams.valgtModell === "option1") {
         userParams.messageHistory.push({
           role: "user",
-          content: userParamsCopy.message,
+          content: userParams.message,
         })
-        respons = await multimodalOpenAi(userParamsCopy)
+        userParams.message = ""
+        respons = await multimodalOpenAi(userParams)
         userParams.messageHistory.push({ role: "assistant", content: respons })
         scrollToBottom(chatWindow)
         isWaiting = false
 
-      } else if (userParams.valgtModell === "option2") {
+      // Nora
+      }  else if (userParams.valgtModell === "option2") {
         userParams.synligKontekst = false
         userParams.messageHistory.push({
           role: "user",
-          content: userParamsCopy.message,
+          content: userParams.message,
         })
-        respons = await noraChat(userParamsCopy)
+        userParams.message = ""
+        respons = await noraChat(userParams)
         userParams.messageHistory.push({ role: "assistant", content: respons })
+        scrollToBottom(chatWindow)
         isWaiting = false
 
-      } else if (userParams.valgtModell === "option3") {
+      // Fagbotter
+      } else if (userParams.valgtModell === "option3" || userParams.valgtModell === "option4"  || userParams.valgtModell === "option5" || userParams.valgtModell === "option6" || userParams.valgtModell === "option7" || userParams.valgtModell === "option8") {
+        userParams.messageHistory.push({
+          role: "user",
+          content: userParams.message,
+        })
+        userParams.message = ""
+        respons = await openAiAssistant(userParams)
+        userParams.messageHistory.push({ role: "assistant", content: respons.messages[0].content[0].text.value })
+        userParams.newThread = false
+        userParams.threadId = respons.thread_id
+        scrollToBottom(chatWindow)
+
+        isWaiting = false
+
+        // Klargjort for GPT-o1-preview
+      } else if (userParams.valgtModell === "option9") {
+        userParams.synligKontekst = true
         userParams.messageHistory.push({
           role: "user",
           content: userParamsCopy.message,
         })
-        respons = await openAiAssistant(userParamsCopy)
+        respons = await multimodalOpenAi(userParams)
         userParams.messageHistory.push({ role: "assistant", content: respons })
-        isWaiting = false
-
-      } else if (userParams.valgtModell === "option4"  || userParams.valgtModell === "option5" || userParams.valgtModell === "option6" || userParams.valgtModell === "option7" || userParams.valgtModell === "option8") {
-        userParams.messageHistory.push({
-          role: "user",
-          content: userParamsCopy.message,
-        })
-        respons = await openAiAssistant(userParamsCopy)
-        userParams.messageHistory.push({ role: "assistant", content: respons })
+        scrollToBottom(chatWindow)
         isWaiting = false
       }
     } catch (error) {
@@ -242,6 +250,12 @@
             <option value="option7">VTR</option>
           {/if}
           <option value="option8">Geologi - Eksperimentell</option>
+          <!-- Skjuler GPT o1 for alle som ikke har admin -->
+          <!-- {#if !token.roles.includes(`${appName.toLowerCase()}.admin`)}
+            <option value="option9" hidden>GPT-o1-preview</option>
+          {:else}
+            <option value="option9">GPT-o1-preview</option>
+          {/if} -->
         </select>
         <div class="showNhideBtns">
           {#if modelTampering}

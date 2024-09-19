@@ -27,9 +27,10 @@ export const noraChat = async (modellInfo) => {
   const isWeekday = (date = new Date()) => date.getDay() % 6 !== 0
   const isDaytime = (date = new Date()) => date.getHours() >= 9 && date.getHours() < 16
   console.log(isWeekday(), isDaytime())
-  // Template API-call
+  // Messagehandling
   const payload = params[modellInfo.valgtModell]
-  payload.question = modellInfo.message
+  const indexLastMessage = modellInfo.messageHistory.length - 1
+  payload.question = modellInfo.messageHistory[indexLastMessage].content
 
   const accessToken = await getHuginToken()
   if (isWeekday() && isDaytime()) {

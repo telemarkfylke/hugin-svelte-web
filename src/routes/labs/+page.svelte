@@ -1,8 +1,9 @@
 <script>
   import { multimodalOpenAi, noraChat, openAiAssistant } from "$lib/services/openAiTools"
+  import { testStructured } from "$lib/services/openAiToolsLabs"
+  import { getArticlesFromNDLA, structureResponse } from "$lib/services/kildekallTools"
   import { modelinfo } from "$lib/data/modelinfo" // Tekstbeskrivelser om valgt modell
   import ChatBlobs from "$lib/components/ChatBlobs.svelte" // Komponent for å vise chatmeldinger
-  // import GPT4o from '$lib/images/GPT4o.png' // Bilde av valgt modell
   import ModelInfo from "../../lib/components/ModelInfo.svelte"
   import "@material/web/button/elevated-button"
   import { onMount, afterUpdate } from "svelte"
@@ -18,9 +19,9 @@
     threadId: "",
     messageHistory: [],
     kontekst: "",
-    valgtModell: "option1", // Default modell GPT-4o
+    valgtModell: "option10", // Default modell Labs Skogmo elever - Helsefremmende arbeid
     base64String: "",
-    temperatur: 0.7, // Default temperatur
+    temperatur: 0.2, // Default temperatur
     synligKontekst: true,
   }
 
@@ -45,7 +46,7 @@
   // Starter med en velkomstmelding
   userParams.messageHistory.push({
     role: "assistant",
-    content: `Velkommen til ${appName}! Hva kan jeg hjelpe deg med i dag?`,
+    content: `Velkommen til ${appName} og HO-botten! Hva kan jeg hjelpe deg med i dag?`,
   })
 
   onMount(async () => {
@@ -66,63 +67,61 @@
     userParams.valgtModell = event.target.value
     modelinfoModell = modelinfo[userParams.valgtModell].navn
     modelinfoBeskrivelse = modelinfo[userParams.valgtModell].description
-    userParams.synligKontekst =
     modelinfo[userParams.valgtModell].synligKontekst
+  }
+
+   // Henter artikler fra NDLA basert på tekstuttrekk fra responsen ttil språkmodellen
+   async function handleNDLARequest() {
+    try {
+      // Strukturerer responsen fra Hugin
+      const structTest = await structureResponse(userParams);
+      structTest.nøkkelord += "  og Helsefremmende arbeid (HS-HSF vg1)"; // Legger til nøkkelord for søk på NDLA
+
+      // Søker etter artikler på NDLA basert på nøkkelord fra responsen til Hugin
+      const ndla = await getArticlesFromNDLA(structTest.nøkkelord);
+      console.log("Søk: ", structTest.nøkkelord); // Log the search term
+      console.log("NDLA: ", ndla); // Logger responsen fra NDLA
+
+      // Lager en ny systemmelding med lenker til artiklene fra NDLA
+      userParams.messageHistory.push({
+        role: "assistant",
+        content: `Les mer om dette på NDLA-sidene: <br> <a target="_blank" href="https://ndla.no/article-iframe/nb/article/${ndla[0].id}">${ndla[0].title.title}</a> og <a target="_blank" href="https://ndla.no/article-iframe/nb/article/${ndla[1].id}">${ndla[1].title.title}</a> eller på <a target="_blank" href="https://ndla.no/article-iframe/nb/article/${ndla[2].id}">${ndla[2].title.title}</a><br>`,
+      });
+    } catch (error) {
+      console.error("Error fetching articles from NDLA:", error);
+    }
   }
 
   // Kaller på valgt modell med tilhørende parametre basert på brukerens valg
   const brukervalg = async () => {
     isWaiting = true
     try {
-      // GPT-4o
-      if (userParams.valgtModell === "option1") {
-        userParams.messageHistory.push({
-          role: "user",
-          content: userParams.message,
-        })
-        userParams.message = ""
-        respons = await multimodalOpenAi(userParams)
-        userParams.messageHistory.push({ role: "assistant", content: respons })
-        scrollToBottom(chatWindow)
-        isWaiting = false
-
-      // Nora
-      }  else if (userParams.valgtModell === "option2") {
-        userParams.synligKontekst = false
-        const message = userParams.message
-        userParams.messageHistory.push({
-          role: "user",
-          content: message,
-        })
-        userParams.message = ""
-        respons = await noraChat(userParams)
-        userParams.messageHistory.push({ role: "assistant", content: respons })
-        scrollToBottom(chatWindow)
-        isWaiting = false
-
       // Fagbotter
-      } else if (userParams.valgtModell === "option3" || userParams.valgtModell === "option4"  || userParams.valgtModell === "option5" || userParams.valgtModell === "option6" || userParams.valgtModell === "option7" || userParams.valgtModell === "option8") {
+      if (userParams.valgtModell === "option10" || userParams.valgtModell === "option11") {
         userParams.messageHistory.push({
           role: "user",
           content: userParams.message,
         })
         userParams.message = ""
         respons = await openAiAssistant(userParams)
-        userParams.messageHistory.push({ role: "assistant", content: respons.messages[0].content[0].text.value })
+        const vasketRespons = respons.messages[0].content[0].text.value.replace(/【\d+:\d+†source】/g, ''); // Pynter på responsen
+        userParams.messageHistory.push({ role: "assistant", content: vasketRespons })
         userParams.newThread = false
         userParams.threadId = respons.thread_id
+        await handleNDLARequest(); // Kildekall: Henter relevante artikler fra NDLA
         scrollToBottom(chatWindow)
         isWaiting = false
-
-        // Klargjort for GPT-o1-preview
-      } else if (userParams.valgtModell === "option9") {
-        userParams.synligKontekst = true
+      }
+      // Strukturert respons
+      else if (userParams.valgtModell === "option12") {
         userParams.messageHistory.push({
           role: "user",
-          content: userParamsCopy.message,
+          content: userParams.message,
         })
-        respons = await multimodalOpenAi(userParams)
-        userParams.messageHistory.push({ role: "assistant", content: respons })
+        userParams.message = ""
+        respons = await testStructured(userParams)
+        console.log("respons", respons.data.choices[0].message.parsed.superkraft)
+        userParams.messageHistory.push({ role: "assistant", content: JSON.stringify(respons.data.choices[0].message.parsed) })
         scrollToBottom(chatWindow)
         isWaiting = false
       }
@@ -236,13 +235,10 @@
     <div class="modelTampering">
       <h2>Modellvelger</h2>
       <div class="boxyHeader">
-        <select class="modellSelect" on:change={valgtModell}>
-          <option value="option1" default>GPT-4o</option>
-          <option value="option2">Nora - Eksperimentell</option>
-          <option value="option3">Matematikkens byggesteiner</option>
-          <option value="option4">Teoretisk matematikk Nivå 1</option>
-          <option value="option5">Teoretisk matematikk Nivå 2</option>
-          <option value="option8">Geologi - Eksperimentell</option>
+        <select class="modellSelect" on:change={valgtModell} >
+          <option value="option10" default selected>Labs Skogmo elever - Helsefremmende arbeid</option>
+          <option value="option11">Labs Skogmo lærer - Helsefremmende arbeid</option>
+          <option value="option12">Test - Enkel strukturert respons</option>
         </select>
         <div class="showNhideBtns">
           {#if modelTampering}
@@ -326,19 +322,10 @@
         bind:value={userParams.message}
         on:keypress={onKeyPress}
       />
-      <button
-        class="link"
-        on:click={() => {
-          advancedInteractions = !advancedInteractions
-        }}><span class="material-symbols-outlined">settings</span></button
-      >
-      <input
-        class="sendButton"
-        type="button"
-        on:click={brukervalg}
-        on:keypress={onKeyPress}
-        value={`Spør ${appName}`}
-      />
+      <button class="link" on:click={() => {advancedInteractions = !advancedInteractions}}>
+        <span class="material-symbols-outlined">settings</span>
+      </button>
+      <input class="sendButton" type="button" on:click={brukervalg} on:keypress={onKeyPress} value={`Spør HO-botten`} />
     </div>
     {#if isError}
       <Modal bind:showModal>
@@ -485,7 +472,7 @@
     border-radius: 5px;
     border: 1px solid #ccc;
     background-color: #f5f5f5;
-    width: 26rem;
+    width: 32rem;
   }
 
   .loading {

@@ -25,7 +25,7 @@
         newThread: true,
         threadId: "",
         vectorStoreId: "",
-        fil: "",
+        fil: "Fil ikke valgt",
         filArray: "",
     };
   
@@ -67,10 +67,10 @@
     const scrollToBottom = async (node) => {
       node.scroll({ top: node.scrollHeight, behavior: "smooth" })
     }
-  
-    // Håndterer valg av modell og oppdaterere modellinformasjon på siden
 
+    // Håndterer valg av modell og oppdaterere modellinformasjon på siden
   async function sporDokument() {
+    userParams.fil = files ? files[0].name : "Ingen fil valgt"
     isWaiting = true
     userParams.messageHistory.push({
           role: "user",
@@ -84,6 +84,7 @@
         userParams.newThread = false;
         userParams.vectorStoreId = JSON.parse(response).data.vectorStore_id;
         userParams.threadId = JSON.parse(response).data.thread_id;
+        userParams.fil = files[0].name;
       });
       userParams.messageHistory.push({ role: "assistant", content: svar });
       scrollToBottom(chatWindow)
@@ -93,7 +94,6 @@
       console.log("Oj, noe gikk galt!");
     }
   }
-
 
     $: if (respons && chatWindow) {
       scrollToBottom(chatWindow)
@@ -126,7 +126,7 @@
       <div class="modelTampering">
         <h2>Dokumentspørring - Eksperimentell</h2>
         <div class="boxyHeader">
-            <p>Her kan du laste opp ett dokument og samtale med dette. Denne funksjonen er under utvikling og kan være ustabil.<br><b>Ikke last opp dokument som inneholder sensitive opplysninger eller annen informasjon som ikke kan deles offentlig</b></p>
+            <p>Her kan du laste opp ett dokument og samtale med dette. Denne funksjonen er under utvikling og kan være ustabil.<br><b>Ikke last opp dokument som inneholder sensitive opplysninger eller annen informasjon som ikke kan deles offentlig</b><br>Du har lastet opp dokumentet: {userParams.fil}</p>
         </div>
       </div>
       <div class="output" bind:this={chatWindow}>
@@ -187,6 +187,7 @@
       height: calc(85vh);
       margin: 10px;
     }
+
     textarea {
       padding: 10px;
       margin-bottom: 20px;

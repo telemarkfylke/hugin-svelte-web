@@ -23,9 +23,9 @@ export const multimodalOpenAi = async (userParams) => {
 }
 
 export const noraChat = async (modellInfo) => {
-  // Sjekker om det er hverdag mellom 09:00 og 16:00
+  // Sjekker om det er hverdag mellom 08:00 og 16:00
   const isWeekday = (date = new Date()) => date.getDay() % 6 !== 0
-  const isDaytime = (date = new Date()) => date.getHours() >= 9 && date.getHours() < 16
+  const isDaytime = (date = new Date()) => date.getHours() >= 8 && date.getHours() < 16
   console.log(isWeekday(), isDaytime())
   // Messagehandling
   const payload = params[modellInfo.valgtModell]
@@ -41,7 +41,7 @@ export const noraChat = async (modellInfo) => {
     })
     return response.data
   } else {
-    return 'Nora er tilgjengelig på hverdager mellom 09:00 og 16:00. Prøv igjen senere.'
+    return 'Nora er tilgjengelig på hverdager mellom 08:00 og 16:00. Prøv igjen senere.'
   }
 }
 

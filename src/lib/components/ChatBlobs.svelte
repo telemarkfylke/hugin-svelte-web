@@ -81,8 +81,9 @@
     .chat-blob-content {
         background-color: var(--himmel-10);
         border-radius: 1rem;
-        padding: 1.5rem;
-        margin: 0.5rem;
+        border: 1px solid var(--himmel-80);
+        padding: 0.5rem 1rem;
+        margin: 0.2rem;
         max-width: 90%;
     }
 

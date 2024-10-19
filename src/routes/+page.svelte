@@ -2,6 +2,7 @@
     import InfoBox from '$lib/components/InfoBox.svelte'
     import chat from '$lib/images/chat.png'
     import doc from '$lib/images/doc.png'
+    import eksperiment from '$lib/images/eksperiment.png'
     import ravner from '$lib/images/ravner.jpg'
     import CardButton from '$lib/components/CardButton.svelte'
     import IconSpinner from '../lib/components/IconSpinner.svelte';
@@ -35,6 +36,9 @@
         <CardButton header={'Chat'} imgPath={chat} imgAlt={'Ikon bilde av en snakkebobble'} gotoPath={'/homeSchool'} paragraph={'Trykk her for chatbotter'} boolValue={true}><span class="material-symbols-outlined">chat</span></CardButton>
         {#if token.roles.includes(`${appName.toLowerCase()}.admin`)}
           <CardButton header={'Dokumentspørring'} imgPath={doc} imgAlt={'Ikon bilde av et dokument'} gotoPath={'/docQuery'} paragraph={'Trykk her hvis du vil bruke KI til spørre og jobbe med egne dokumenter.'} boolValue={true}><span class="material-symbols-outlined">find_in_page</span></CardButton>
+        {/if}
+        {#if token.roles.includes(`${appName.toLowerCase()}.labs`) || token.roles.includes(`${appName.toLowerCase()}.admin`)}
+          <CardButton header={'Pilot'} imgPath={eksperiment} imgAlt={'Ikon bilde av et reagensrør'} gotoPath={'/labs'} paragraph={'Trykk her for labs.'} boolValue={true}><span class="material-symbols-outlined">experiment</span></CardButton>
         {/if}
       </div>
     {/if}

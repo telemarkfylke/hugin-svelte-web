@@ -35,7 +35,7 @@ export const structureResponse = async (userParams) => {
         payload.temperatur = userParams.temperatur
         payload.bilde_base64String = userParams.base64String
         payload.response_format = zodResponseFormat(penRespons, "penRespons")
-        payload.model = "gpt-4o-2024-08-06"
+        payload.model = "gpt-4o"
     
         const accessToken = await getHuginToken()
         // Call AZF-funksjon with payload

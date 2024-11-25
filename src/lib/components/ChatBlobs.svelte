@@ -1,14 +1,10 @@
 <script>
-    import SvelteMarkdown from 'svelte-markdown'
     import katex from 'katex';
     import showdown from 'showdown';
 // Props
     export let role = 'user'
     export let content = 'content'
-    const test = `(a + b)^2 = a^2 + +2ab + b^2`
-	const render = (s) => katex.renderToString(s)
     let converter = new showdown.Converter()
-    let test2 = converter.makeHtml("Hello **World**" + render(test))
 
     // Function to convert string from markdown to valid HTML with showdown.
     // It also substitutes the LaTeX code with the corresponding HTML using katex.
@@ -17,9 +13,6 @@
         s = s.replace(/\\\[(.*?)\\\]/g, (_, match) => `$$${match}$$`);
         s = s.replace(/\\\((.*?)\\\)/g, (_, match) => `$${match}$`);
         s = s.replace(/\s*\\\[\s*(.*?)\s*\\\]/gs, (_, match) => `$${match}$`);
-        // s = s.replace(/\s*\\\[\s*(.*?)\s*\\\]/s, (_, match) => `$${match}$`);
-        // s = s.replace(/\s*\\\[\s*\n(.*?)\n\s*\\\]/s, (_, match) => `$$${match}$$`);
-        // console.log(s)
 
         // Convert markdown to HTML
         let html = converter.makeHtml(s);

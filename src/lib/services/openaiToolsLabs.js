@@ -19,7 +19,7 @@ const MatteInfo = z.object({
   nøkkelord: z.string(),
 });
 
-
+// Testfunksjon for å sjekke at skjemaene fungerer
 export const testStructured = async (userParams) => {
   console.log(zodResponseFormat(Superheltinfo), "event")
    // Template API-call
@@ -32,8 +32,6 @@ export const testStructured = async (userParams) => {
    payload.bilde_base64String = userParams.base64String
    payload.response_format = zodResponseFormat(Superheltinfo, "SuperInfo")
    payload.model = "gpt-4o-2024-08-06"
- 
-  console.log(payload)
 
    const accessToken = await getHuginToken()
    // Call AZF-funksjon with payload
@@ -42,8 +40,24 @@ export const testStructured = async (userParams) => {
        authorization: `Bearer ${accessToken}`
      }
    })
-   console.log(response)
-   //console.log(response.data.choices[0].message.content)
-   //console.log(response.data.choices[0].message.parsed)
    return response
+}
+
+export const nbTranscript = async (filliste) => {
+  console.log("Første fil: ", filliste)
+  const datapakken = new FormData()
+  datapakken.append('filer', filliste)
+  const accessToken = await getHuginToken()
+  console.log("lydfil: ", filliste)
+  const r = await axios.post(`${import.meta.env.VITE_AI_API_URI}/nbTranscript`, datapakken, {
+    method: 'post',
+    data: datapakken,
+    headers: {
+      'Content-Type': 'multipart/form-data',
+      authorization: `Bearer ${accessToken}`
+    }
+  })
+  console.log("Venter på transcript: ")
+  console.log(r)
+  return JSON.stringify(r.data.data.text)
 }

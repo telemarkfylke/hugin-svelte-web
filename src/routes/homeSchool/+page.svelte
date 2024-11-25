@@ -1,14 +1,13 @@
 <script>
-  import { multimodalOpenAi, noraChat, openAiAssistant } from "$lib/services/openAiTools"
-  import { modelinfo } from "$lib/data/modelinfo" // Tekstbeskrivelser om valgt modell
+  import { multimodalOpenAi, noraChat, openAiAssistant } from "../../lib/services/openAiTools"
+  import { modelinfo } from "../../lib/data/modelinfo" // Tekstbeskrivelser om valgt modell
   import ChatBlobs from "$lib/components/ChatBlobs.svelte" // Komponent for å vise chatmeldinger
-  // import GPT4o from '$lib/images/GPT4o.png' // Bilde av valgt modell
   import ModelInfo from "../../lib/components/ModelInfo.svelte"
   import "@material/web/button/elevated-button"
   import { onMount, afterUpdate } from "svelte"
   import { getHuginToken } from "../../lib/useApi"
   import IconSpinner from "../../lib/components/IconSpinner.svelte"
-  import Modal from "../../lib/components/Modal.svelte"
+  import autosize from 'svelte-autosize';
 
   // Modell-parametere og payload
   const userParams = {
@@ -25,21 +24,16 @@
   }
 
   // Variabler for håndtering av data og innhold i frontend
-  let outputElement
-  let tekstFraPdf = "" // Brukes ikke....Ennå
   let selectedFiles = []
   let respons
   let modelinfoModell = modelinfo[userParams.valgtModell].navn
   let modelinfoBeskrivelse = modelinfo[userParams.valgtModell].description
-  let illustrasjonsbilde = modelinfo[userParams.valgtModell].illustrasjonsbilde
   let modelTampering = false // Viser modellinformasjon
-  let advancedInteractions = false
   let token = null
   let chatWindow
-  let isWaiting = false
+  let isWaiting = false // Venter på svar fra modell
   let isError = false
   let errorMessage = ""
-  let showModal = false
   const appName = import.meta.env.VITE_APP_NAME
 
   // Starter med en velkomstmelding
@@ -73,6 +67,9 @@
   // Kaller på valgt modell med tilhørende parametre basert på brukerens valg
   const brukervalg = async () => {
     isWaiting = true
+    // Get the textarea and set the height
+    const textarea = document.querySelector("textarea")
+    textarea.style.height = "60px"
     try {
       // GPT-4o
       if (userParams.valgtModell === "option1") {
@@ -100,7 +97,7 @@
         scrollToBottom(chatWindow)
         isWaiting = false
 
-      // Fagbotter
+      // Fagbotter - Matematikk og Geologi
       } else if (userParams.valgtModell === "option3" || userParams.valgtModell === "option4"  || userParams.valgtModell === "option5" || userParams.valgtModell === "option6" || userParams.valgtModell === "option7" || userParams.valgtModell === "option8") {
         userParams.messageHistory.push({
           role: "user",
@@ -113,19 +110,7 @@
         userParams.threadId = respons.thread_id
         scrollToBottom(chatWindow)
         isWaiting = false
-
-        // Klargjort for GPT-o1-preview
-      } else if (userParams.valgtModell === "option9") {
-        userParams.synligKontekst = true
-        userParams.messageHistory.push({
-          role: "user",
-          content: userParamsCopy.message,
-        })
-        respons = await multimodalOpenAi(userParams)
-        userParams.messageHistory.push({ role: "assistant", content: respons })
-        scrollToBottom(chatWindow)
-        isWaiting = false
-      }
+      } 
     } catch (error) {
       isError = true
       errorMessage = error
@@ -134,52 +119,39 @@
         role: "assistant",
         content: "Noe gikk galt. Prøv igjen.",
       })
-      openModal()
     }
   }
 
-  const openModal = () => {
-    // Disable scrolling when modal is open
-    document.body.style.overflow = "auto"
-    document.body.style.height = "100%"
-    showModal = true
-  }
-
-  // Justerer størrelsen på opplastede bilder
-  const resizeBase64Image = (base64, width, height) => {
-  // Create a canvas element
-  const canvas = document.createElement('canvas')
-  // Create an image element from the base64 string
-  const image = new Image();
-  image.src = base64;
-
-  // Return a Promise that resolves when the image has loaded
-  return new Promise((resolve, reject) => {
-    image.onload = () => {
-      // Calculate the aspect ratio of the image
-      const aspectRatio = image.width / image.height;
-
-      // Calculate the best fit dimensions for the canvas
-      if (width / height > aspectRatio) {
-        canvas.width = height * aspectRatio;
-        canvas.height = height;
-      } else {
-        canvas.width = width;
-        canvas.height = width / aspectRatio;
-      }
-
-      // Draw the image to the canvas
-      const context = canvas.getContext('2d');
-      if (context) {
-        context.drawImage(image, 0, 0, canvas.width, canvas.height);
-      }
-
-      // Resolve the Promise with the resized image as a base64 string
-      resolve(canvas.toDataURL());
-    };
-
-    image.onerror = reject;
-  });
+// Justerer størrelsen på opplastede bilder
+const resizeBase64Image = (base64, width, height) => {
+    // Opprett et canvas-element
+    const canvas = document.createElement('canvas');
+    // Opprett et bilde-element fra base64-strengen
+    const image = new Image();
+    image.src = base64;
+    // Returner en Promise som løses når bildet er lastet
+    return new Promise((resolve, reject) => {
+        image.onload = () => {
+            // Beregn bildets aspektforhold
+            const aspectRatio = image.width / image.height;
+            // Beregn beste passform-dimensjoner for canvas
+            if (width / height > aspectRatio) {
+                canvas.width = height * aspectRatio;
+                canvas.height = height;
+            } else {
+                canvas.width = width;
+                canvas.height = width / aspectRatio;
+            }
+            // Tegn bildet på canvas
+            const context = canvas.getContext('2d');
+            if (context) {
+                context.drawImage(image, 0, 0, canvas.width, canvas.height);
+            }
+            // Løs Promisen med det skalerte bildet som en base64-streng
+            resolve(canvas.toDataURL('image/jpeg'));
+        };
+        image.onerror = reject;
+    });
 };
 
   // Konverterer opplastet fil til base64
@@ -210,8 +182,8 @@
   }
 
   const onKeyPress = async (e) => {
-    if (e.charCode === 13) {
-      // isEnterPressed = true
+    if (e.charCode === 13 && !e.shiftKey) {
+      e.preventDefault()
       scrollToBottom(chatWindow)
       brukervalg()
     }
@@ -250,8 +222,9 @@
               Trykk her for å lukke<span class="material-symbols-outlined">keyboard_arrow_up</span>
             </button>
           {:else}
-            <button class="link" on:click={() => { modelTampering = !modelTampering }}>
-              Trykk her for å lese mer om modellen<span class="material-symbols-outlined">keyboard_arrow_down</span>
+            <button id="modelinfoButton" class="link" on:click={() => { modelTampering = !modelTampering }}>
+              Trykk her for å legge inn kontekst og systemledetekster<br>
+              Les mer om modellen og dens egenskaper<span class="material-symbols-outlined">keyboard_arrow_down</span>
             </button>
           {/if}
         </div>
@@ -259,28 +232,12 @@
 
       {#if modelTampering}
         <div class="boxy" id="testBox">
-          <ModelInfo
-            modelinfo={modelinfoModell}
-            infoText={modelinfoBeskrivelse}
-          />
+          <ModelInfo modelinfo={modelinfoModell} infoText={modelinfoBeskrivelse} />
           {#key userParams.synligKontekst}
             {#if userParams.synligKontekst}
-              <textarea
-                placeholder="Her kan du legge inn kontekst til språkmodellen."
-                bind:value={userParams.kontekst}
-                rows="4"
-                cols="auto"
-              ></textarea>
+              <textarea use:autosize id="inputKontekst" placeholder="Her kan du legge inn kontekst til språkmodellen." bind:value={userParams.kontekst} rows="4" cols="auto"></textarea>
               <label for="temperatur">Temperatur: </label>
-              <input
-                type="range"
-                id="temperatur"
-                name="temperatur"
-                min="0"
-                max="2"
-                step="0.1"
-                bind:value={userParams.temperatur}
-              />
+                <input type="range" id="temperatur" name="temperatur" min="0" max="2" step="0.1" bind:value={userParams.temperatur}/>
               {userParams.temperatur}
             {/if}
           {/key}
@@ -304,60 +261,16 @@
         {/each}
       {/if}
     </div>
-    {#if advancedInteractions}
-      <div class="advancedInteractions">
-        <label for="file-upload"><span class="material-symbols-outlined">upload_file</span></label>
-        <input
-          type="file"
-          id="file-upload"
-          bind:files={selectedFiles}
-          on:change={handleFileSelect}
-          accept="image/*"
-        />
-      </div>
-    {/if}
-    <div class="userInteractionField">
-      <input
-        name="askHugin"
-        type="text"
-        autocomplete="off"
-        placeholder={`Spør ${appName}`}
-        size="50"
-        bind:value={userParams.message}
-        on:keypress={onKeyPress}
-      />
-      <button
-        class="link"
-        on:click={() => {
-          advancedInteractions = !advancedInteractions
-        }}><span class="material-symbols-outlined">settings</span></button
-      >
-      <input
-        class="sendButton"
-        type="button"
-        on:click={brukervalg}
-        on:keypress={onKeyPress}
-        value={`Spør ${appName}`}
-      />
+    
+    <div class="brukerInputWrapper">
+      <textarea id="brukerInput" use:autosize name="askHugin" autocomplete="off" placeholder={`Skriv inn ledetekst (Shift + Enter for flere linjer)`} bind:value={userParams.message} on:keypress={onKeyPress}></textarea>
+      <label for="imageButton"><span class="material-symbols-outlined">add_photo_alternate</span>
+        <input id="imageButton" type="file" bind:files={selectedFiles} on:change={handleFileSelect} accept="image/*" style="display: none;"/></label>
+      <label for="sendButton"><span class="material-symbols-outlined">send</span>
+        <input id="sendButton" type="button" on:click={brukervalg} on:keypress={onKeyPress} value={`Spør ${appName}`} style="display: none;"/></label>
     </div>
-    {#if isError}
-      <Modal bind:showModal>
-        <h2 slot="header">Error</h2>
-        <h3>Noe gikk galt ⛔</h3>
-        <div class="centerstuff">
-          <p>
-            {JSON.stringify(
-              errorMessage.response?.data ||
-                errorMessage.stack ||
-                errorMessage.message
-            )}
-          </p>
-        </div>
-        <div class="errorMsg">{JSON.stringify(errorMessage)}</div>
-      </Modal>
-    {/if}
   {/if}
-  <br><p>Husk at språkmodeller lager tekst som kan inneholde feil. Sjekk alltid flere kilder og bruk sunn fornuft når du bruker KI-tjenester.<br> Ikke send inn data som kan være sensitive eller inneholder informasjon som ikke kan deles offentlig</p><br>
+  <br><p style="font-size: 14px;font-color: light-grey">Husk at språkmodeller lager tekst som kan inneholde feil. Sjekk alltid flere kilder og bruk sunn fornuft når du bruker KI-tjenester.<br> Ikke send inn data som kan være sensitive eller inneholder informasjon som ikke kan deles offentlig.</p><br>
 </main>
 
 <style>
@@ -370,15 +283,48 @@
     height: calc(85vh);
     margin: 10px;
   }
-  textarea {
-    padding: 10px;
-    margin-bottom: 20px;
+
+#modelinfoButton {
+  border: 1px solid #ccc;
+  padding: 3px 10px 3px 10px;
+  background-color: #f5f5f5;
+}
+
+textarea {
     display: block;
     width: 100%;
-    overflow: hidden;
-    resize: both;
+    overflow-y: scroll;
+    resize: none;
     min-height: 40px;
+    max-height: 200px;
     line-height: 20px;
+  }
+  
+  .brukerInputWrapper {
+    display: flex;
+    width: 100%;
+    border: 1px solid #ccc;
+    padding-left: 10px;
+    background-color: #fffafa;
+    position: relative;
+    align-items: center;
+  }
+
+  #brukerInput {
+    border: none;
+    outline: none;
+    background: none;
+    flex-grow: 1;
+    padding-top: 15px;
+    padding-bottom: 5px;
+  }
+
+  #brukerInput::placeholder {
+    padding-top: 5px;
+  }
+
+  #brukerInput:focus::placeholder {
+  color: transparent;
   }
 
   .boxyHeader {
@@ -404,36 +350,12 @@
     background-color: var(--gress-10);
     font-size: 1.8rem;
     border-radius: 5px;
-    padding: 10px;
-    margin: 10px;
+    padding: 5px;
+    margin: 5px;
   }
 
   label .material-symbols-outlined:hover {
     background-color: var(--gress-50);
-  }
-
-  .userInteractionField {
-    display: flex;
-    width: 100%;
-    border: 1px solid #ccc;
-  }
-  .userInteractionField button {
-    transition: transform 0.7s ease-in-out;
-  }
-  .userInteractionField button:hover {
-    transform: rotate(360deg);
-  }
-
-  input[type="text"] {
-    all: unset;
-    width: 80%;
-    padding: 15px 20px;
-    margin: 8px 5px;
-    border-right: 1px solid #ccc;
-  }
-
-  input[type="file"] {
-    display: none;
   }
 
   .output {
@@ -447,16 +369,6 @@
     overflow-y: scroll;
   }
 
-  /* .right {
-    float: right;
-    width: 30%;
-    padding: 10px;
-    margin-right: 80px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    margin-bottom: 10px;
-  } */
-
   .modelTampering {
     border: 1px solid #ccc;
     border-radius: 5px;
@@ -465,18 +377,31 @@
     width: 100%;
   }
 
-  .sendButton {
-    padding: 15px;
-    margin: 8px;
-    background-color: var(--gress-10);
-    color: white;
+#imageButton {
+  background-color: #e0e0e0;
     border: none;
-    border-radius: 5px;
+    border-radius: 50%;
+    width: 20px;
+    height: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
     cursor: pointer;
-    color: black;
   }
 
-  .sendButton:hover {
+  #sendButton {
+    background-color: #e0e0e0;
+    border: none;
+    border-radius: 50%;
+    width: 20px;
+    height: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+  }
+
+  #sendButton:hover {
     background-color: var(--gress-50);
   }
 
@@ -492,25 +417,6 @@
     display: flex;
     justify-content: center;
     align-items: center;
-  }
-
-  .errorMsg {
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    padding: 10px;
-    margin: 10px;
-    justify-content: center;
-    width: 97%;
-    height: 20vh;
-    overflow: auto;
-  }
-
-  .centerstuff {
-    display: flex;
-    flex-direction: column;
-    flex-wrap: wrap;
-    justify-content: center;
-    padding: 5px;
   }
 
   @media only screen and (max-width: 768px) {

@@ -55,7 +55,7 @@ export const openAiAssistant = async (userParams) => {
   }
 
   const accessToken = await getHuginToken()
-
+  console.log('assistantOpenAi', payload)
   const response = await axios.post(`${import.meta.env.VITE_AI_API_URI}/assistantOpenAi`, payload, {
     headers: {
       authorization: `Bearer ${accessToken}`
@@ -67,7 +67,7 @@ export const openAiAssistant = async (userParams) => {
 export const docQueryOpenAi = async (filliste, up) => {
   // Template API-call
   const payload = {
-    assistant_id: 'asst_Rey678W0eAv6ZXl7uGzTMkL4',
+    assistant_id: import.meta.env.VITE_ASSISTANT_DOCQUERY,
     new_thread: up.newThread,
     vectorStore_id: up.vectorStoreId,
     thread_id: up.threadId,

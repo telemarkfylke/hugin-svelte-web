@@ -1,6 +1,6 @@
 <script>
   import { multimodalOpenAi, noraChat, openAiAssistant } from "$lib/services/openAiTools"
-  import { testStructured } from "$lib/services/openAiToolsLabs"
+  import { testStructured } from "../../lib/services/openaiToolsLabs"
   import { getArticlesFromNDLA, structureResponse } from "$lib/services/kildekallTools"
   import { modelinfo } from "$lib/data/modelinfo" // Tekstbeskrivelser om valgt modell
   import ChatBlobs from "$lib/components/ChatBlobs.svelte" // Komponent for å vise chatmeldinger

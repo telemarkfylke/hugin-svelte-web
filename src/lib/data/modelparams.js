@@ -1,4 +1,4 @@
-// Parametre som sendes til backend og api
+
 export const params = {
   option1: {
     message: '',
@@ -22,74 +22,74 @@ export const params = {
       return_full_text: true
     }
   },
-  option3: {
+  option3: { // Matematikkens byggesteiner
     message: '',
     kontekst: '',
     model: 'gpt-4o',
-    assistant_id: 'asst_masx2DR1ynqNvP308OWlKzix',
+    assistant_id: import.meta.env.VITE_ASSISTANT_MB,
     new_thread: true,
     thread_id: ''
-  },
-  option4: {
+    },
+    option4: { // Teoretisk matematikk 1
     message: '',
     kontekst: '',
     model: 'gpt-4o',
-    assistant_id: 'asst_r7NROIPTuk2OME5sElp4ORSl',
+    assistant_id: import.meta.env.VITE_ASSISTANT_TM1,
     new_thread: true,
     thread_id: ''
   },
-  option5: {
+  option5: { // Teoretisk matematikk 2
     message: '',
     kontekst: '',
     model: 'gpt-4o',
-    assistant_id: 'asst_iZz9L7JGhfTgjdgXDeR5SsgJ',
+    assistant_id: import.meta.env.VITE_ASSISTANT_TM2,
     new_thread: true,
     thread_id: ''
   },
-  option6: {
+  option6: { // Brukes ikke
     message: '',
     kontekst: '',
     model: 'gpt-4o',
-    assistant_id: 'asst_PjgBFDXTELeMF6vXKvhlOZrH',
+    assistant_id: '',
     new_thread: true,
     thread_id: ''
   },
-  option7: {
+  option7: { // VTR
     message: '',
     kontekst: '',
     model: 'gpt-4o',
-    assistant_id: 'asst_kleLVY0hLwXAgcgxoBgzwqLA',
+    assistant_id:'',
     new_thread: true,
     thread_id: ''
   },
-  option8: {
+  option8: { // Geologi
     message: '',
     kontekst: '',
     model: 'gpt-4o',
-    assistant_id: 'asst_MZM21yV96uFVHet8O09zkKtK',
+    assistant_id: import.meta.env.VITE_ASSISTANT_GEOLOGI,
     new_thread: true,
     thread_id: ''
   },
-  option9: {
+  option9: { // o1-preview
     message: '',
     messageHistory: '',
     kontekst: '',
     model: 'o1-preview',
     base64String: ''
   },
-  option10: {
+  option10: { // Skogmo - Elev
     message: '',
     kontekst: '',
     model: 'gpt-4o',
-    assistant_id: 'asst_0nUf4eeGzahHpm50tKYVdAOg',
+    assistant_id: import.meta.env.VITE_ASSISTANT_SKOGMO_ELEV,
     new_thread: true,
     thread_id: ''
   },
-  option11: {
+  option11: { // Skogmo - Lærer
     message: '',
     kontekst: '',
     model: 'gpt-4o',
-    assistant_id: 'asst_w4CndCxQh1DZ5XTMM21cRUJw',
+    assistant_id: import.meta.env.VITE_ASSISTANT_SKOGMO_LAERER,
     new_thread: true,
     thread_id: ''
   },

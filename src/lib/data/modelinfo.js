@@ -73,5 +73,11 @@ export const modelinfo = {
     description: 'Eksperimentell bot for å teste strukturert respons',
     synligKontekst: false,
     illustrasjon: ''
+  },
+  option13: {
+    navn: 'Mistral',
+    description: 'Eksperimentell bot for å teste Mistral',
+    synligKontekst: false,
+    illustrasjon: ''
   }
 }

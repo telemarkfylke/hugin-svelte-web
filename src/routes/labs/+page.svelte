@@ -1,5 +1,6 @@
 <script>
   import { multimodalOpenAi, noraChat, openAiAssistant } from "$lib/services/openAiTools"
+  import { multimodalMistral } from "$lib/services/mistralTools"
   import { testStructured } from "../../lib/services/openaiToolsLabs"
   import { getArticlesFromNDLA, structureResponse } from "$lib/services/kildekallTools"
   import { modelinfo } from "$lib/data/modelinfo" // Tekstbeskrivelser om valgt modell
@@ -125,6 +126,20 @@
         scrollToBottom(chatWindow)
         isWaiting = false
       }
+      // Mistral
+      else if (userParams.valgtModell === "option13") {
+        userParams.messageHistory.push({
+          role: "user",
+          content: userParams.message,
+        })
+        userParams.message = ""
+        console.log("userParams", userParams)
+        respons = await multimodalMistral(userParams)
+        userParams.messageHistory.push({ role: "assistant", content: respons.data.choices[0].message.content })
+        console.log("respons", respons)
+        scrollToBottom(chatWindow)
+        isWaiting = false
+      }
     } catch (error) {
       isError = true
       errorMessage = error
@@ -239,6 +254,7 @@
           <option value="option10" default selected>Labs Skogmo elever - Helsefremmende arbeid</option>
           <option value="option11">Labs Skogmo lærer - Helsefremmende arbeid</option>
           <option value="option12">Test - Enkel strukturert respons</option>
+          <option value="option13">Mistral</option>
         </select>
         <div class="showNhideBtns">
           {#if modelTampering}

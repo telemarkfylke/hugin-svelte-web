@@ -100,5 +100,13 @@ export const params = {
     assistant_id: '',
     new_thread: true,
     thread_id: ''
+  },
+  option13: {
+    message: '',
+    kontekst: '',
+    model: 'pixtral-large-latest',
+    assistant_id: '',
+    new_thread: false,
+    thread_id: ''
   }
 }

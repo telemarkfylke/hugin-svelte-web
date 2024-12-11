@@ -1,0 +1,18 @@
+VITE_CLIENT_ID="<Din egen verdi>"
+VITE_CLIENT_ISS="<Din egen verdi>"
+VITE_REDIRECT_URI="http://localhost:5173" # For local development
+VITE_LOGOUT_URI="http://localhost"
+VITE_AI_API_URI="http://localhost:7071/api" # Url for API (either locally or remote running) - remember CORS-settings on the API
+VITE_AI_API_SCOPE="<Din egen verdi>"
+ 
+VITE_COUNTY="Telemark"
+VITE_APP_NAME="Hugin"
+
+# Assistent-id'er Telemark
+VITE_ASSISTANT_MB="<Din egen verdi>"
+VITE_ASSISTANT_TM1="<Din egen verdi>"
+VITE_ASSISTANT_TM2="<Din egen verdi>"
+VITE_ASSISTANT_GEOLOGI="<Din egen verdi>"
+VITE_ASSISTANT_SKOGMO_ELEV="<Din egen verdi>"
+VITE_ASSISTANT_SKOGMO_LAERER="<Din egen verdi>"
+VITE_ASSISTANT_DOCQUERY="<Din egen verdi>"

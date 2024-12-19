@@ -3,7 +3,7 @@
   import { multimodalOpenAi, noraChat, openAiAssistant } from "../../lib/services/openAiTools"
   import { multimodalMistral } from "$lib/services/mistralTools"
   import { modelinfo } from "../../lib/data/modelinfo" // Tekstbeskrivelser om valgt modell
-  import ChatBlobs from "$lib/components/ChatBlobs.svelte" // Komponent for å vise chatmeldinger
+  import ChatBlobs from "$lib/components/ChatBlobsv2.svelte" // Komponent for å vise chatmeldinger
   import ModelInfo from "../../lib/components/ModelInfo.svelte"
   import "@material/web/button/elevated-button"
   import { onMount, afterUpdate } from "svelte"

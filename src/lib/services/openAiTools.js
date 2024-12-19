@@ -98,3 +98,18 @@ export const docQueryOpenAi = async (filliste, up) => {
   payload.new_thread = 'false'
   return JSON.stringify(r)
 }
+
+export const tekstTilTale = async (tekst) => {
+  console.log('tekstTilTale', tekst)
+  const payload = {
+    tekst: tekst
+  }
+  const accessToken = await getHuginToken()
+  // Call AZF-funksjon with payload
+  const response = await axios.post(`${import.meta.env.VITE_AI_API_URI}/ttsOpenAi`, payload, {
+    headers: {
+      authorization: `Bearer ${accessToken}`
+    }
+  })
+  return response.data
+}

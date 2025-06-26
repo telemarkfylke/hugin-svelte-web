@@ -3,8 +3,8 @@
 	"version": "0.0.1",
 	"private": true,
 	"scripts": {
-		"lint": "eslint .; prettier --check .",
-		"format": "prettier --write .",
+		"lint": "eslint .",
+		"fix": "eslint . --fix",
 		"dev": "vite dev",
 		"build": "vite build",
 		"preview": "vite preview"
@@ -16,11 +16,8 @@
 		"@sveltejs/kit": "^2.21.1",
 		"@sveltejs/vite-plugin-svelte": "^5.0.3",
 		"eslint": "^9.29.0",
-		"eslint-config-prettier": "^10.1.5",
 		"eslint-plugin-svelte": "^3.9.3",
 		"globals": "^16.2.0",
-		"prettier": "^3.6.1",
-		"prettier-plugin-svelte": "^3.4.0",
 		"svelte": "^5.14.3",
 		"vite": "^6.3.5"
 	},

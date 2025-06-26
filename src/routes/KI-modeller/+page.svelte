@@ -207,7 +207,7 @@
 <main>
   {#if !token}
     <div class="loading">
-      <IconSpinner width={"32px"} />
+      <IconSpinner width="32px" />
     </div>
   {:else if !token.roles.some( (r) => [`${appName.toLowerCase()}.basic`, `${appName.toLowerCase()}.admin`].includes(r) )}
     <p>Oi, du har ikke tilgang. Prøver du deg på noe lurt? 🤓</p>
@@ -240,7 +240,7 @@
         {#each messageHistory as chatMessage}
           <ChatBlobs role={chatMessage.role} content={chatMessage.content} {...(chatMessage.role === "assistant" ? { assistant: chatMessage.model } : {})} />
         {/each}
-        <ChatBlobs role={"assistant"} content={"..."} />
+        <ChatBlobs role="assistant" content="..." />
       {:else}
         {#each messageHistory as chatMessage}
           {#if typeof chatMessage.content === "string"}
@@ -260,7 +260,7 @@
         use:autosize 
         name="askHugin" 
         autocomplete="off" 
-        placeholder={`Skriv inn ledetekst (Shift + Enter for flere linjer)`} 
+        placeholder="Skriv inn ledetekst (Shift + Enter for flere linjer)" 
         bind:value={inputMessage}
         onkeypress={(e) => onKeyPress(e, brukervalg)}></textarea>
 

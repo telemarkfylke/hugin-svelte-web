@@ -148,7 +148,7 @@ function handleDokFilesChange() {
 <main>
   {#if !token}
     <div class="loading">
-      <IconSpinner width={"32px"} />
+      <IconSpinner width="32px" />
     </div>
   {:else if !checkRoles(token, [`${appName.toLowerCase()}.admin`, `${appName.toLowerCase()}.dokumentchat`])}
     <p>Oi, du har ikke tilgang. Prøver du deg på noe lurt? 🤓</p>
@@ -164,7 +164,7 @@ function handleDokFilesChange() {
         {#each userParams.messageHistory as chatMessage}
           <ChatBlobs role={chatMessage.role} content={chatMessage.content} {...(chatMessage.role === "assistant" ? { assistant: chatMessage.model } : {})} />
         {/each}
-        <ChatBlobs role={"assistant"} content={"..."} />
+        <ChatBlobs role="assistant" content="..." />
       {:else}
         {#each userParams.messageHistory as chatMessage}
           {#if typeof chatMessage.content === "string"}
@@ -184,7 +184,7 @@ function handleDokFilesChange() {
         use:autosize 
         name="askHugin" 
         autocomplete="off" 
-        placeholder={`Skriv inn ledetekst (Shift + Enter for flere linjer)`} 
+        placeholder="Skriv inn ledetekst (Shift + Enter for flere linjer)" 
         bind:value={inputMessage}
         onkeypress={(e) => onKeyPress(e, sporDokument)}></textarea>
         <label for="fileButton"><span class="material-symbols-outlined inputButton">cloud_upload</span>

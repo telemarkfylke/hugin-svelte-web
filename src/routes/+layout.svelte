@@ -68,12 +68,12 @@
 <!-- If the account is not loaded, show a loading message. -->
 {#if !account}
   <div class="loading">
-    <IconSpinner width={"32px"} />
+    <IconSpinner width="32px" />
   </div>
 {:else}
   {#await getHuginToken(true)}
     <div class="loading">
-      <IconSpinner width={"32px"} />
+      <IconSpinner width="32px" />
     </div> 
   {:then _}
     <div class="topbar">

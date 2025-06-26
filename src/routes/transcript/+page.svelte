@@ -86,7 +86,7 @@ let mediaRecorder;
 
 {#if !token}
       <div class="loading">
-        <IconSpinner width={"32px"} />
+        <IconSpinner width="32px" />
       </div>
     {:else if !checkRoles(token, [`${appName.toLowerCase()}.admin`, `${appName.toLowerCase()}.transkripsjon`])}
       <p>Oi, du har ikke tilgang. Prøver du deg på noe lurt? 🤓</p>

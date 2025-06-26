@@ -15,10 +15,16 @@ export default [
   {
     languageOptions: {
       globals: { ...globals.browser, ...globals.node }
+    },
+    rules: {
+      "no-unused-vars": ["warn", { argsIgnorePattern: "^_" }]
     }
   },
   {
     files: ['**/*.svelte', '**/*.svelte.js'],
-    languageOptions: { parserOptions: { svelteConfig } }
+    languageOptions: { parserOptions: { svelteConfig } },
+    rules: {
+      "no-unused-vars": ["warn", { argsIgnorePattern: "^_" }]
+    }
   }
 ];

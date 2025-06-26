@@ -1,6 +1,5 @@
 <script>
-    import katex from 'katex';
-    import showdown from 'showdown';
+    import { markdownToHtml } from '../helpers/markdown-to-html.js'
 
     /**
      * @typedef {Object} Props
@@ -10,28 +9,6 @@
 
     /** @type {Props} */
     let { role = 'user', content = 'content', assistant = '' } = $props();
-    let converter = new showdown.Converter()
-
-    // Function to convert string from markdown to valid HTML with showdown.
-    // It also substitutes the LaTeX code with the corresponding HTML using katex.
-    function parseAiResponse(s) {
-        // Replace all LaTeX expressions
-        s = s.replace(/\\\[(.*?)\\\]/g, (_, match) => `$$${match}$$`);
-        s = s.replace(/\\\((.*?)\\\)/g, (_, match) => `$${match}$`);
-        s = s.replace(/\s*\\\[\s*(.*?)\s*\\\]/gs, (_, match) => `$${match}$`);
-
-        // Convert markdown to HTML
-        let html = converter.makeHtml(s);
-
-        // Replace <em> and </em> with _
-        html = html.replace(/<em>/g, '_ ').replace(/<\/em>/g, '_ ')
-        let htmlWithKatex = html.replace(/\$\$(.*?)\$\$/g, (_, match) => {
-            return katex.renderToString(match, { throwOnError: false });
-        }).replace(/\$(.*?)\$/g, (_, match) => {
-            return katex.renderToString(match, { throwOnError: false });
-        });
-        return htmlWithKatex
-    }
 </script>
 <svelte:head>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css" integrity="sha384-nB0miv6/jRmo5UMMR1wu3Gz6NLsoTkbqJghGIsx//Rlm+ZU03BU6SQNC66uf4l5+" crossorigin="anonymous">
@@ -52,7 +29,7 @@
                 {#if content === "..."}
                     <div class="loader"></div>
                 {:else}
-                    {@html parseAiResponse(content)}
+                    {@html markdownToHtml(content)}
                     {#if role !== 'user'}
                         <div class="assistantInfo">
                             {assistant}

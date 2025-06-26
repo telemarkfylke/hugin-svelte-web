@@ -6,6 +6,27 @@ import { getArticlesFromNDLA, generateKeywords } from './kildekallTools'
 
 const { VITE_AI_API_URI: aiApiUri } = import.meta.env
 
+const getNDLAArticleUrls = (articles) => {
+  let articleUrls = 'Les mer på NDLA om: '
+  for (let i= 0; i < articles.length; i++) {
+    const text = `[${articles[i].title.title}](https://ndla.no/article-iframe/nb/article/${articles[i].id})`
+
+    if (i === 0) {
+      articleUrls += `${text}`
+      continue;
+    }
+
+    if (i < (articles.length - 1)) {
+      articleUrls += `, ${text}`
+      continue;
+    }
+
+    articleUrls += `, og ${text}`
+  }
+
+  return articleUrls
+}
+
 export const responseOpenAi = async (userParams) => {
   const accessToken = await getHuginToken()
   const payload = {
@@ -33,7 +54,7 @@ export const openAiAssistant = async (userParams) => {
     tile: userParams.tile
   }
   const accessToken = await getHuginToken()
-  const response = await axios.post(`${aiApiUri}/assistantOpenAi`, payload, {
+  const { data } = await axios.post(`${aiApiUri}/assistantOpenAi`, payload, {
     headers: {
       authorization: `Bearer ${accessToken}`
     }
@@ -41,14 +62,15 @@ export const openAiAssistant = async (userParams) => {
 
   if (userParams.tools === 'NDLA') {
     console.log('Assistant - Using NDLA tool')
-    const keyWords = await generateKeywords(response.data.messages[0].content[0].text.value)
+    const keyWords = await generateKeywords(data.messages[0].content[0].text.value)
     const articles = await getArticlesFromNDLA(keyWords)
-    const articleUrl = `Les mer på NDLA om: <a href="https://ndla.no/article-iframe/nb/article/${articles[0].id}" target="_blank">${articles[0].title.title}</a>, <a href="https://ndla.no/article-iframe/nb/article/${articles[1].id}" target="_blank">${articles[1].title.title}</a>, og <a href="https://ndla.no/article-iframe/nb/article/${articles[2].id}" target="_blank">${articles[2].title.title}</a><br>Lisens: ${articles[0].license}`
-    return [response.data, articleUrl]
+    const articleUrls = getNDLAArticleUrls(articles)
+
+    return [data, articleUrls]
   }
 
   console.log('Assistant - No tool')
-  return [response.data, false]
+  return [data, false]
 }
 
 export const docQueryOpenAi = async (userParams) => {

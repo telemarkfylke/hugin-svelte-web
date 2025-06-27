@@ -53,10 +53,9 @@ export const handleFileSelect = async (event, {
     // Bruker map for å lage en liste med promises for hver fil
     const imagePromises = Array.from(files).map(async (file) => {
       try {
-        const dataUrl = await readFileAsDataURL(file)
-        return dataUrl
+        return await readFileAsDataURL(file)
       } catch (error) {
-        console.error('Error reading image file:')
+        console.error('Error reading image file:', error)
         return null
       }
     })
@@ -107,7 +106,7 @@ export const handleFileSelect = async (event, {
           dataUrl
         }
       } catch (error) {
-        console.error('Error reading document file:')
+        console.error('Error reading document file:', error)
         return null
       }
     })

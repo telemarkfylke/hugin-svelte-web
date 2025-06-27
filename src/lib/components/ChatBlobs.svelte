@@ -29,6 +29,7 @@
                 {#if content === "..."}
                     <div class="loader"></div>
                 {:else}
+                    <!-- eslint-disable svelte/no-at-html-tags -->
                     {@html markdownToHtml(content)}
                     {#if role !== 'user'}
                         <div class="assistantInfo">

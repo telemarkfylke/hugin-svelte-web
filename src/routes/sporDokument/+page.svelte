@@ -135,7 +135,7 @@ function handleDokFilesChange() {
       })
       isWaiting = false
     } catch (e) {
-      console.log("Oj, noe gikk galt!");
+      console.log("Oj, noe gikk galt!", e);
     }
   }
 
@@ -161,12 +161,12 @@ function handleDokFilesChange() {
           content={userParams.messageHistory[0].content}
           assistant={`${appName}`}  />
       {:else if isWaiting}
-        {#each userParams.messageHistory as chatMessage}
+        {#each userParams.messageHistory as chatMessage (chatMessage.content)}
           <ChatBlobs role={chatMessage.role} content={chatMessage.content} {...(chatMessage.role === "assistant" ? { assistant: chatMessage.model } : {})} />
         {/each}
         <ChatBlobs role="assistant" content="..." />
       {:else}
-        {#each userParams.messageHistory as chatMessage}
+        {#each userParams.messageHistory as chatMessage (chatMessage.content)}
           {#if typeof chatMessage.content === "string"}
             <ChatBlobs 
               role={chatMessage.role} 

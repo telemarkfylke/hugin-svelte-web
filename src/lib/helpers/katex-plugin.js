@@ -1,9 +1,6 @@
 // https://www.npmjs.com/package/@vscode/markdown-it-katex - tweaked to support sveltekit due to: https://github.com/microsoft/vscode-markdown-it-katex/issues/14
 import katexDefault from 'katex'
 
-const inlineDelimiters = ['$', '(']
-const blockDelimiters = ['$$', '[']
-
 function isValidInlineDelim (state, pos) {
   const prevChar = state.src[pos - 1]
   const char = state.src[pos]

@@ -8,6 +8,7 @@
   import autosize from "svelte-autosize";
   import Modal from "$lib/components/Modal.svelte";
   import { checkRoles } from '$lib/helpers/checkRoles';
+  import { markdownToHtml } from '$lib/helpers/markdown-to-html.js'
 
   // Init state - Modell-parametere og payload
   const userParams = $state({
@@ -168,7 +169,7 @@
       <h2>Modellvelger</h2>
       <div class="boxyHeader">
         <select class="modellSelect" onchange={valgtModell}>
-          {#each models as model}
+          {#each models as model (model.id)}
             {#if model.metadata.tile === "skolebotter"}
               <option value={model.params.assistant_id}>{model.metadata.navn}</option>
             {/if}
@@ -187,12 +188,12 @@
           content={userParams.messageHistory[0].content}
           assistant={`${appName}`}  />
       {:else if isWaiting}
-        {#each userParams.messageHistory as chatMessage}
+        {#each userParams.messageHistory as chatMessage (chatMessage.content)}
           <ChatBlobs role={chatMessage.role} content={chatMessage.content} {...(chatMessage.role === "assistant" ? { assistant: chatMessage.model } : {})} />
         {/each}
         <ChatBlobs role="assistant" content="..." />
       {:else}
-        {#each userParams.messageHistory as chatMessage}
+        {#each userParams.messageHistory as chatMessage (chatMessage.content)}
           {#if typeof chatMessage.content === "string"}
             <ChatBlobs 
               role={chatMessage.role} 
@@ -263,7 +264,8 @@
         <h2 >{modelinfoModell}</h2>
       {/snippet}
     {#snippet mainContent()}
-        <p >{@html modelinfoBeskrivelse}</p>
+        <!-- eslint-disable svelte/no-at-html-tags -->
+        <p>{@html markdownToHtml(modelinfoBeskrivelse)}</p>
       {/snippet}
     {#if userParams.synligKontekst}
     <textarea 

@@ -81,6 +81,11 @@
       await new Promise((resolve) => setTimeout(resolve, 2000));
     }
     token = await getHuginToken(true);
+
+    // Aktiver studiemodus automatisk for elever
+    if (token.upn && token.upn.endsWith("@skole.telemarkfylke.no")) {
+      studiemodus = true;
+    }
     
     const updateWidth = () => {
       viewportWidth = window.innerWidth;

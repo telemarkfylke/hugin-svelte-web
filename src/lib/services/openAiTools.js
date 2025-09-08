@@ -120,9 +120,6 @@ export const docQueryOpenAi = async (userParams) => {
 export const streamResponseOpenAi = async (userParams) => {
   const accessToken = await getHuginToken()
 
-  console.log(userParams)
-  console.log('Kontekst i streamResponseOpenAi:', userParams.kontekst)
-
   const payload = {
     messages: userParams.messages,
     model: userParams.model || 'gpt-4.1',
@@ -144,7 +141,6 @@ export const streamResponseOpenAi = async (userParams) => {
     }
   }
 
-  console.log('Oppdatert melding for streaming:', payload.messages)
   const response = await fetch(`${aiApiUri}/streamResponseOpenAi`, {
     method: 'POST',
     headers: {

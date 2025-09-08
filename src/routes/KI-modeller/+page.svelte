@@ -273,7 +273,6 @@
         streamParams.temperature = temperatur;
       }
 
-      console.log("Streaming parametre:", streamParams);
       const response = await streamResponseOpenAi(streamParams);
       
       // Kodeblokken under tar seg av streamingen

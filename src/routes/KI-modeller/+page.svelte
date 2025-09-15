@@ -176,12 +176,12 @@
     }
     
     // Legger til brukermelding i historikken i to versjoner. En med og en uten kontekst
-    messageHistory = [...messageHistory, { 
-      role: "user", 
+    messageHistory = [...messageHistory, {
+      role: "user",
       content: displayMessage, // UI
       fullContent: apiMessage, // API
-      model: modelinfoModell, 
-      uniqueId: generateUniqueId() 
+      model: modelinfoModell,
+      uniqueId: generateUniqueId()
     }];
 
     try {
@@ -232,10 +232,18 @@
     
     message = inputMessage;
     inputMessage = ""; // Tømmer inputfeltet
-    
-    try {
 
+    try {
+      // Handle different file upload scenarios
       if (imageB64.length > 0) {
+        // For image uploads: add text message and create multimodal content
+        messageHistory = [...messageHistory, {
+          role: "user",
+          content: message,
+          model: modelinfoModell,
+          uniqueId: generateUniqueId()
+        }];
+
         const content = [{ type: 'text', text: message }];
         for (const imageBase64 of imageB64) {
           content.push({
@@ -243,12 +251,22 @@
             image_url: { url: imageBase64 }
           });
         }
-        messageHistory.push({ role: 'user', content:content }); // Multimodal melding
-      } else {
-        messageHistory = [...messageHistory, { 
-          role: "user", 
+        // Update the last message with multimodal content for API processing
+        messageHistory[messageHistory.length - 1].apiContent = content;
+      } else if (dokFiles.length > 0) {
+        // For PDF uploads: add text message (files already added by fileHandler)
+        messageHistory = [...messageHistory, {
+          role: "user",
           content: message,
-          model: modelinfoModell, 
+          model: modelinfoModell,
+          uniqueId: generateUniqueId()
+        }];
+      } else {
+        // For text-only messages
+        messageHistory = [...messageHistory, {
+          role: "user",
+          content: message,
+          model: modelinfoModell,
           uniqueId: generateUniqueId()
         }];
       }
@@ -260,13 +278,23 @@
         messageHistory = [...messageHistory, { role: "assistant", content: "", model: modelinfoModell, uniqueId: assistantMessageId, isStreaming: true }];
 
 
+      // Create the messages array for API, using apiContent when available
+      const apiMessages = messageHistory.map(msg => {
+        if (msg.apiContent) {
+          return { ...msg, content: msg.apiContent };
+        }
+        return msg;
+      });
+
       const streamParams = {
-        messages: [...messageHistory],  // Sjekk at alleMeldinger er korrekt
+        messages: apiMessages,  // Use processed messages for API
         model: model,
         kontekst: kontekst,
         studiemodus: studiemodus,
-        isFirstPrompt: isFirstPrompt
+        isFirstPrompt: isFirstPrompt,
+        dokFiles: dokFiles
       };
+
 
       // Dropp temperatur for gpt-5
       if (model !== 'gpt-5') {
@@ -361,6 +389,7 @@
     dokFiles = result.dokFiles;
     filArray = result.filArray;
     /*fileSelect = result.fileSelect;*/
+
   }
 
   // Håndterer tastetrykk i textarea
@@ -485,10 +514,12 @@
         onkeydown={(e) => onKeyDown(e, brukervalg)}></textarea>
 
       {#if token.roles.some( (r) => [`${appName.toLowerCase()}.admin`].includes(r))}
-        {#if valgtModell === "0" }
+        {#if valgtModell === "6" }
         <label for="fileButton" title="Last opp PDF-dokumenter for analyse"><span class="material-symbols-outlined inputButton">picture_as_pdf</span>
           <input id="fileButton" type="file" bind:files={dokFileInput} onchange={onFileSelect} accept=".pdf" multiple style="display:none;" />
         </label>
+        {/if}
+        {#if valgtModell === "0" || valgtModell === "6" }
         <label for="imageButton" title="Last opp bilder for analyse"><span class="material-symbols-outlined inputButton">add_photo_alternate</span>
           <input id="imageButton" type="file" bind:files={imageFiles} onchange={onFileSelect} accept="image/*" multiple style="display: none;"/></label>
         {/if}

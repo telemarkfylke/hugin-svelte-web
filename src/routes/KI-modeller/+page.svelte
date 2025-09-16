@@ -1,5 +1,5 @@
 <script>
-  import { streamResponseOpenAi } from "$lib/services/openAiTools";
+  import { streamResponseOpenAi, responseOpenAi } from "$lib/services/openAiTools";
   import { multimodalMistral } from "$lib/services/mistralTools";
   import { noraChat } from "$lib/services/huggingFaceTools";
   import { models } from "$lib/data/models"; // Modellkonfigurasjon
@@ -147,8 +147,9 @@
   const brukervalg = async () => {
     if (!inputMessage.trim()) return; // Fix for å unngå tom input
     
-    // Modeller som bruker streaming ()8Foreløpig kun GPT-5 og GPT-4.1
-    if (valgtModell === "0" || valgtModell === "6") {
+    // Modeller som bruker streaming (Foreløpig kun GPT-5 og GPT-4.1)
+    // Men ikke når vi har PDF-filer - da bruker vi non-streaming
+    if ((valgtModell === "0" || valgtModell === "6") && dokFiles.length === 0) {
       await streamingBrukervalg();
       return;
     }
@@ -201,6 +202,10 @@
         const response = await multimodalMistral(params);
         messageHistory = [...messageHistory, { role: "assistant", content: response.choices[0].message.content, model: modelinfoModell, uniqueId: generateUniqueId() }];
         return;
+      } else if (valgtModell === "0" || valgtModell === "6") { // OpenAI models
+        const response = await responseOpenAi(params);
+        messageHistory = [...messageHistory, { role: "assistant", content: response.data.output_text, model: modelinfoModell, uniqueId: generateUniqueId() }];
+        return;
       }
       // Hvis et eller annet skjer med modellvalget
       throw new Error("Ugyldig modellvalg");
@@ -221,7 +226,13 @@
   // Streamingversjon for OpenAI-modellene (Trenger gjennomgang)
   const streamingBrukervalg = async () => {
     if (!inputMessage.trim()) return; // Hvis bruker bare trykker send uten innhold
-    
+
+    // Check if we have PDF files and GPT-4.1 model - use non-streaming endpoint
+    if (dokFiles.length > 0 && valgtModell === "6") {
+      await brukervalg();
+      return;
+    }
+
     isWaiting = true;
     isStreaming = false;
     currentStreamingMessage = ""; // Buffervariabel til å ta i mot streamen

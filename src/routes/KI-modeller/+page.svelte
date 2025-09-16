@@ -525,7 +525,7 @@
         onkeydown={(e) => onKeyDown(e, brukervalg)}></textarea>
 
       {#if token.roles.some( (r) => [`${appName.toLowerCase()}.admin`].includes(r))}
-        {#if valgtModell === "6" }
+        {#if valgtModell === "0" || valgtModell === "6" }
         <label for="fileButton" title="Last opp PDF-dokumenter for analyse"><span class="material-symbols-outlined inputButton">picture_as_pdf</span>
           <input id="fileButton" type="file" bind:files={dokFileInput} onchange={onFileSelect} accept=".pdf" multiple style="display:none;" />
         </label>

@@ -126,8 +126,10 @@ export const streamResponseOpenAi = async (userParams) => {
     stream: true,
     studiemodus: userParams.studiemodus,
     isFirstPrompt: userParams.isFirstPrompt,
-    kontekst: userParams.kontekst
+    kontekst: userParams.kontekst,
+    dokFiles: userParams.dokFiles || []
   }
+
 
   if (userParams.studiemodus) {
     payload.messages[0] = {

@@ -193,7 +193,7 @@
       <h1>Eksperimentell selvbetjeningsløsning for transkripsjon av tale</h1>
 
       <p class="intro-text">Her kan du spille inn eller laste opp lyd og få transkripsjonen tilsendt på epost til brukeren du er logget inn med.</p>
-      <div class="alert"><p><b>Tjenesten er under utvikling og kan være ustabil. Husk at du ikke må sende inn lydklipp som inneholder sensitiv informasjon.</b></p></div>
+      <div class="alert"><p><b>Tjenesten er under utvikling og kan være ustabil.</b></p></div>
 
       <!-- Combined input section -->
       <section class="card">

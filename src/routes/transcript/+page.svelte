@@ -385,7 +385,7 @@
 
       <h2>Kontaktinformasjon</h2>
       <p>
-        Hvis du har spørsmål eller bekymringer om denne personvernerklæringen, vennligst kontakt oss på <a href="mailto:noen@telemarkfylke.no">noen@telemarkfylke.no</a>.
+        Hvis du har spørsmål eller bekymringer om denne personvernerklæringen, vennligst kontakt oss på <a href="mailto:personvernombudet@telemarkfylke.no">personvernombudet@telemarkfylke.no</a>.
       </p>
     </InfoBox>
  

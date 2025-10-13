@@ -313,5 +313,25 @@ export const tfkModels =
         new_thread: true,
         thread_id: ''
       }
+    },
+    {
+      id: '24',
+      metadata: {
+        navn: 'Driftsfag-botten',
+        description: 'Eksperimentell bot til bruk for Driftsfag.',
+        synligKontekst: false,
+        illustrasjon: '',
+        tile: 'skolebotter',
+        endpoint: 'assistantOpenAi',
+        assistant: true
+      },
+      params: {
+        message: '',
+        kontekst: '',
+        model: 'gpt-4.1',
+        assistant_id: import.meta.env.VITE_ASSISTANT_DRIFTSFAG,
+        new_thread: true,
+        thread_id: ''
+      }
     }
   ]

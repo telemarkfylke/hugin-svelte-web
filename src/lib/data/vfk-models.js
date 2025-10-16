@@ -162,7 +162,7 @@ export const vfkModels = [
       description: 'Assistent som skal hjelpe lærere i regi av Nettskolen Vestfold i utviklingen av pedagogiske ressurser innen helsearbeiderfaget.',
       synligKontekst: false,
       illustrasjon: '',
-      tile: 'labs',
+      tile: 'skolebotter',
       endpoint: 'assistantOpenAi',
       assistant: true,
       tools: 'NDLA'
@@ -183,7 +183,7 @@ export const vfkModels = [
       description: 'Assistent som skal hjelpe elever med å forstå fagstoff innen helsearbeiderfaget.',
       synligKontekst: false,
       illustrasjon: '',
-      tile: 'labs',
+      tile: 'skolebotter',
       endpoint: 'assistantOpenAi',
       assistant: true,
       tools: 'NDLA'

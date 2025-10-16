@@ -193,7 +193,7 @@ function handleDokFilesChange() {
         bind:value={inputMessage}
         onkeydown={(e) => onKeyDown(e, sporDokument)}></textarea>
         <label for="fileButton"><span class="material-symbols-outlined inputButton">cloud_upload</span>
-          <input style="display:none;" bind:files={dokFiles} id="fileButton" multiple type="file" accept=".xls, .xlsx, .docx, .pdf, .txt, .json, .md, .pptx" />
+          <input style="display:none;" bind:files={dokFiles} id="fileButton" multiple type="file" accept=".docx, .pdf, .txt, .json, .md, .pptx" />
         </label>
         {#if isError}
           {console.log("Error:")}

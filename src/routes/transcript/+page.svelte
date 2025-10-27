@@ -193,7 +193,15 @@
       <h1>Eksperimentell selvbetjeningsløsning for transkripsjon av tale</h1>
 
       <p class="intro-text">Her kan du spille inn eller laste opp lyd og få transkripsjonen tilsendt på epost til brukeren du er logget inn med.</p>
-      <div class="alert"><p><b>Tjenesten er under utvikling og kan være ustabil.</b></p></div>
+      <div class="alert">
+        <p><b>Husk at:</b></p>
+        <ul>
+          <li>Tjenesten er under utvikling og kan være ustabil.</li>
+          <li>Bruk ikke tjenesten til sensitiv eller taushetsbelagt informasjon.</li>
+          <li>Alle parter må opplyses om at det gjøres opptak før innspilling påbegynnes.</li>
+          <li>Transkripsjoner og oppsummeringer kan inneholde feil og må alltid kvalitetssikres av brukeren.</li>
+        </ul>
+      </div>
 
       <!-- Combined input section -->
       <section class="card">
@@ -295,7 +303,7 @@
           >
             <h3 id="modal-title">Bekreft sending</h3>
             <p>Er du sikker på at du vil sende lydfilen til transkribering?</p>
-            <p class="modal-info">Transkripsjonen vil bli sendt til deg på e-post.</p>
+            <p class="modal-info">Lenke til transkripsjonen vil bli sendt til deg på e-post.</p>
             <div class="modal-buttons">
               <button onclick={confirmSend} class="confirm-btn">Send</button>
               <button onclick={cancelSend} class="cancel-btn">Avbryt</button>

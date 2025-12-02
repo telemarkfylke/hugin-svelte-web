@@ -200,6 +200,7 @@
           <li>Bruk ikke tjenesten til sensitiv eller taushetsbelagt informasjon.</li>
           <li>Alle parter må opplyses om at det gjøres opptak før innspilling påbegynnes.</li>
           <li>Transkripsjoner og oppsummeringer kan inneholde feil og må alltid kvalitetssikres av brukeren.</li>
+          <li>Sørg for at taleopptak du laster opp i transkripsjonsløsningen blir permanent slettet fra mobilen eller andre lagringssteder etter opplasting, og at de ikke lagres i din egen skyløsning (f.eks. iCloud). Du skal aldri ta eller laste opp taleopptak av elever.</li>
         </ul>
       </div>
 
@@ -210,6 +211,7 @@
           <div class="input-column">
             <h2>Last opp en lydfil</h2>
             <p>Last opp lydklipp på MP3, WAV, M4A, MP4, MOV eller AVI-format (maks 70MB). Den ferdige transkripsjonen og en oppsummering blir sendt til deg på epost.</p>
+            <p><b>Husk å slette lydfilen fra enheten din etter opplasting</b></p>
 
             {#if fileError}
               <div class="error">{fileError}</div>

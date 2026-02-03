@@ -42,10 +42,13 @@
   </script>
   
   <main>
+    <div class="beta-notification">
+      Vi bygger Hugin 2.0 🤩 - Du kan teste betautgaven her: <a href="https://hugin-beta.telemarkfylke.no" target="_blank" rel="noopener noreferrer">hugin-beta.telemarkfylke.no</a>
+    </div>
     {#if !token}
       <div class="loading">
         <IconSpinner width="32px" />
-      </div> 
+      </div>
     {:else}
       <div class="centerstuff">
         <CardButton header="Om tjenesten" imgPath={chat} imgAlt="Ikon bilde av en snakkebobble" gotoPath="/about" paragraph="" boolValue={true}><span class="material-symbols-outlined">Help</span></CardButton>
@@ -104,6 +107,26 @@
       display: flex;
       justify-content: center;
       align-items: center;
-    }   
+    }
+    .beta-notification {
+      background-color: #e3f2fd;
+      border: 1px solid #1976d2;
+      border-radius: 8px;
+      padding: 12px 20px;
+      margin-bottom: 20px;
+      font-size: 1rem;
+      color: #1565c0;
+      text-align: center;
+      width: fit-content;
+      max-width: 90%;
+    }
+    .beta-notification a {
+      color: #1565c0;
+      font-weight: bold;
+      text-decoration: underline;
+    }
+    .beta-notification a:hover {
+      color: #0d47a1;
+    }
 
   </style>
